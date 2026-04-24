@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d2ijtieumyhof"]
+
+[ext_resource type="Texture2D" uid="uid://j4bi2napaom2" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Run.png" id="1_p0vlq"]
+[ext_resource type="Script" uid="uid://bx3d78qgetgp5" path="res://scenes/player.gd" id="1_v6fml"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v6fml"]
+radius = 8.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1216506587]
+script = ExtResource("1_v6fml")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2082829804]
+shape = SubResource("CircleShape2D_v6fml")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1284839694]
+texture_filter = 1
+position = Vector2(-1, -13)
+scale = Vector2(2, 2)
+texture = ExtResource("1_p0vlq")
+hframes = 8
+vframes = 3
