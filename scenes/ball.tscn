@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://d0udwekt8pmqj"]
+
+[ext_resource type="Texture2D" uid="uid://dj5jeekxb1kb0" path="res://assets/golf.png" id="1_7s4qf"]
+[ext_resource type="Script" uid="uid://kj6uit6atxcs" path="res://scenes/ball.gd" id="1_cxlvu"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7s4qf"]
+bounce = 0.8
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
+radius = 16.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_7s4qf"]
+properties/0/path = NodePath("RigidBody2D:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("RigidBody2D:linear_velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("RigidBody2D:position")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Ball" type="Node2D" unique_id=1626174489]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=1878059294]
+physics_material_override = SubResource("PhysicsMaterial_7s4qf")
+gravity_scale = 0.0
+linear_damp = 0.5
+angular_damp = 0.5
+script = ExtResource("1_cxlvu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" unique_id=1130031798]
+shape = SubResource("CircleShape2D_n1dj2")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=141369183]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_7s4qf")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=246819970]
+root_path = NodePath("../RigidBody2D")
+replication_config = SubResource("SceneReplicationConfig_7s4qf")

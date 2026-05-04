@@ -4,7 +4,7 @@ extends Node2D
 @onready var players: Node2D = $Players
 #@onready var player_spawner: MultiplayerSpawner = $PlayerSpawner
 @onready var spawn_points: Node2D = $SpawnPoints
-
+var ball_scene = preload("res://scenes/ball.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,12 +15,21 @@ func _ready() -> void:
 		var spawn_point = spawn_points.get_child(i)
 		player_inst.global_position = spawn_point.global_position
 		player_inst.setup(player_data)
+	if multiplayer.is_server():
+		# Usamos call_deferred para asegurar que el sistema de red esté listo
+		call_deferred("spawn_ball")
+	
 #	player_spawner.spawn_path = NodePath("Players")
 #	player_spawner.spawn_function = _spawn_player
 
 #	if multiplayer.is_server():
 #		_spawn_existing_players()
 
+func spawn_ball() -> void:
+	var ball = ball_scene.instantiate()
+	ball.name = "PelotaOficial"
+	ball.position = Vector2(500, 300) # Darle un nombre fijo ayuda a evitar duplicados
+	add_child(ball, true) # El 'true' es para que el nombre sea legible en red
 
 #func _spawn_player(peer_id: int) -> Node:
 #	var player_scene: PackedScene = preload("res://scenes/player.tscn")

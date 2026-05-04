@@ -951,7 +951,7 @@ player_scene = ExtResource("2_o48fc")
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=475653172]
 
 [node name="Marker2D" type="Marker2D" parent="SpawnPoints" unique_id=158766936]
-position = Vector2(31.687351, 19.456703)
+position = Vector2(165, 222)
 gizmo_extents = 193.1
 
 [node name="Marker2D2" type="Marker2D" parent="SpawnPoints" unique_id=235801768]
@@ -961,6 +961,8 @@ gizmo_extents = 193.1
 [node name="Players" type="Node2D" parent="." unique_id=159335388]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=545811531]
+_spawnable_scenes = PackedStringArray("uid://d0udwekt8pmqj")
+spawn_path = NodePath("..")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=274660837]
 light_mask = 2
