@@ -9,33 +9,35 @@ bounce = 0.8
 [sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
 radius = 16.0
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_7s4qf"]
-properties/0/path = NodePath("RigidBody2D:rotation")
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cxlvu"]
+properties/0/path = NodePath(".:linear_velocity")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("RigidBody2D:linear_velocity")
+properties/1/path = NodePath(".:ball_color")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("RigidBody2D:position")
+properties/2/path = NodePath(".:position")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
-[node name="Ball" type="Node2D" unique_id=1626174489]
-
-[node name="RigidBody2D" type="RigidBody2D" parent="." unique_id=1878059294]
+[node name="RigidBody2D" type="RigidBody2D" unique_id=1878059294]
+collision_layer = 2
+collision_mask = 4
 physics_material_override = SubResource("PhysicsMaterial_7s4qf")
 gravity_scale = 0.0
 linear_damp = 0.5
 angular_damp = 0.5
 script = ExtResource("1_cxlvu")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" unique_id=1130031798]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1130031798]
 shape = SubResource("CircleShape2D_n1dj2")
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D" unique_id=141369183]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=141369183]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_7s4qf")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=246819970]
-root_path = NodePath("../RigidBody2D")
-replication_config = SubResource("SceneReplicationConfig_7s4qf")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=314627011]
+replication_config = SubResource("SceneReplicationConfig_cxlvu")

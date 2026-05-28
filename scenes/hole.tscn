@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bkx76vg4actau"]
+
+[ext_resource type="Script" uid="uid://dpcvfpe6885xc" path="res://scenes/hole.gd" id="1_lerre"]
+[ext_resource type="Texture2D" uid="uid://cldmjiobksnir" path="res://assets/hole.png" id="2_iyxdx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_a2ebe"]
+radius = 8.0
+height = 22.0
+
+[node name="Hole" type="Area2D" unique_id=396996812]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_lerre")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1940442653]
+position = Vector2(0, -16)
+texture = ExtResource("2_iyxdx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=625184194]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_a2ebe")

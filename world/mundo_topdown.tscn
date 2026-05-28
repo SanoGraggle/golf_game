@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://08d7spox0ass" path="res://world/t_map.gd" id="1_fu1nk"]
 [ext_resource type="PackedScene" uid="uid://d2ijtieumyhof" path="res://scenes/Player.tscn" id="2_o48fc"]
 [ext_resource type="Texture2D" uid="uid://cayrs2rwjpg6b" path="res://assets/Tileset/Tileset Grass Spring.png" id="2_vmc13"]
+[ext_resource type="PackedScene" uid="uid://bkx76vg4actau" path="res://scenes/hole.tscn" id="4_uvkck"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o48fc"]
 texture = ExtResource("2_vmc13")
@@ -972,3 +973,12 @@ tile_map_data = PackedByteArray("AAD9////AAAIABEAAAD9/wAAAAAIABEAAAD9/wEAAAAIABE
 tile_set = SubResource("TileSet_uvkck")
 
 [node name="Node2D2" type="Node2D" parent="." unique_id=1584916946]
+
+[node name="BallsContainer" type="Node2D" parent="." unique_id=694676643]
+
+[node name="BallSpawner" type="MultiplayerSpawner" parent="." unique_id=1182196639]
+_spawnable_scenes = PackedStringArray("uid://d0udwekt8pmqj")
+spawn_path = NodePath("../BallsContainer")
+
+[node name="Hole" parent="." unique_id=396996812 instance=ExtResource("4_uvkck")]
+position = Vector2(870, 535)
