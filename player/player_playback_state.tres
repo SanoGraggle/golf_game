@@ -1,0 +1,18 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://dycn3kyjvssa1"]
+
+[ext_resource type="AnimationNodeBlendSpace2D" uid="uid://ck34ipx63sp2a" path="res://player/idle_blend_state.tres" id="1_0p71l"]
+[ext_resource type="AnimationNodeBlendSpace2D" uid="uid://bwosbqaygn3cs" path="res://player/run_blend_state.tres" id="2_t6wqa"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_70d11"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
+
+[resource]
+states/Idle/node = ExtResource("1_0p71l")
+states/Idle/position = Vector2(365.2163, 99.38271)
+states/Walk/node = ExtResource("2_t6wqa")
+states/Walk/position = Vector2(365.9671, 202)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_70d11"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_khinc")]
