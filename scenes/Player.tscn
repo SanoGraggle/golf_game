@@ -7,7 +7,7 @@
 [ext_resource type="AnimationNodeStateMachine" uid="uid://dycn3kyjvssa1" path="res://player/player_playback_state.tres" id="4_qu4a1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v6fml"]
-radius = 8.0
+radius = 6.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v6fml"]
 properties/0/path = NodePath("..:position")
@@ -319,8 +319,7 @@ shape = SubResource("CircleShape2D_v6fml")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1284839694]
 texture_filter = 1
-position = Vector2(0, -13)
-scale = Vector2(2, 2)
+position = Vector2(0, -8)
 texture = ExtResource("2_3li8b")
 hframes = 4
 vframes = 3
@@ -343,3 +342,8 @@ parameters/Walk/blend_position = Vector2(0, 0)
 script = ExtResource("3_3li8b")
 animation_tree = NodePath("../AnimationTree")
 sprite = NodePath("../Sprite2D")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
