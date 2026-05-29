@@ -7,7 +7,7 @@
 bounce = 0.8
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
-radius = 16.0
+radius = 8.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cxlvu"]
 properties/0/path = NodePath(".:linear_velocity")
@@ -25,7 +25,7 @@ properties/3/replication_mode = 1
 
 [node name="RigidBody2D" type="RigidBody2D" unique_id=1878059294]
 collision_layer = 2
-collision_mask = 4
+collision_mask = 5
 physics_material_override = SubResource("PhysicsMaterial_7s4qf")
 gravity_scale = 0.0
 linear_damp = 0.5
@@ -36,7 +36,7 @@ script = ExtResource("1_cxlvu")
 shape = SubResource("CircleShape2D_n1dj2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=141369183]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_7s4qf")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=314627011]

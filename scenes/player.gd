@@ -1,7 +1,7 @@
 # player.gd
 extends CharacterBody2D
 
-const SPEED = 300.0
+const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
 
 @export var player_color: Color = Color.WHITE # Nueva variable sincronizada

@@ -3,6 +3,26 @@
 [ext_resource type="Script" uid="uid://08d7spox0ass" path="res://world/t_map.gd" id="1_fu1nk"]
 [ext_resource type="PackedScene" uid="uid://d2ijtieumyhof" path="res://scenes/Player.tscn" id="2_o48fc"]
 [ext_resource type="Texture2D" uid="uid://cayrs2rwjpg6b" path="res://assets/Tileset/Tileset Grass Spring.png" id="2_vmc13"]
+[ext_resource type="Texture2D" uid="uid://csme751aeildk" path="res://assets/Tileset/ALL props seasons.png" id="4_qbrxl"]
+[ext_resource type="PackedScene" uid="uid://bkx76vg4actau" path="res://scenes/hole.tscn" id="4_uvkck"]
+[ext_resource type="Texture2D" uid="uid://pabbh18ewis2" path="res://assets/Tileset/Beach animations tiles.png" id="5_iqd2w"]
+[ext_resource type="Texture2D" uid="uid://jbbtir3te4xf" path="res://assets/Tileset/Fence Wood.png" id="5_obt1r"]
+[ext_resource type="Texture2D" uid="uid://dlfp03pmebikw" path="res://assets/Tileset/Cave Water Ground animations tiles.png" id="6_obt1r"]
+[ext_resource type="Texture2D" uid="uid://c6h6aww5y53bh" path="res://assets/COSAS/arboles/Trees.png" id="6_vmkqi"]
+[ext_resource type="Texture2D" uid="uid://wmxstb14sr2r" path="res://assets/COSAS/arboles/Tree.png" id="7_enh3q"]
+[ext_resource type="Texture2D" uid="uid://cvqr2xb5u3hbs" path="res://assets/Tileset/Tileset Grass Cliff Tileset Spring.png" id="7_n364b"]
+[ext_resource type="Texture2D" uid="uid://c28a22elgyue4" path="res://assets/COSAS/arboles/Pine Tree copiar.png" id="8_8umbf"]
+[ext_resource type="Texture2D" uid="uid://bykxdj2typhdc" path="res://assets/Tileset/Tileset Grass Cliff Tileset Summer.png" id="8_wcswd"]
+[ext_resource type="Texture2D" uid="uid://b1fhguc0xtg2f" path="res://assets/COSAS/arboles/bushes.png" id="9_8umbf"]
+[ext_resource type="Texture2D" uid="uid://gtn44vtmxaya" path="res://assets/Tileset/Tileset Grass Summer.png" id="9_vmkqi"]
+[ext_resource type="Texture2D" uid="uid://c0l8irwck0qbh" path="res://assets/COSAS/arboles/Birch Tree-Sheet copiar.png" id="10_5i6o2"]
+[ext_resource type="Texture2D" uid="uid://b4das1y4dtggq" path="res://assets/Tileset/Water Ground animations tiles.png" id="10_enh3q"]
+[ext_resource type="Texture2D" uid="uid://bidh5ge4durqk" path="res://assets/Tileset/Water tile.png" id="11_iqd2w"]
+[ext_resource type="Texture2D" uid="uid://dsm3rqnd6y5g2" path="res://assets/COSAS/Moai.png" id="11_xvthv"]
+[ext_resource type="Texture2D" uid="uid://dqsemrb8tw5d5" path="res://assets/COSAS/Water fountain.png" id="12_kyore"]
+[ext_resource type="Texture2D" uid="uid://bkujbpmduf4li" path="res://assets/COSAS/water stones.png" id="13_6ymdo"]
+[ext_resource type="Texture2D" uid="uid://h7b1xns18u0e" path="res://assets/COSAS/PropsWater Summer.png" id="14_v7a5t"]
+[ext_resource type="Texture2D" uid="uid://daufgynue3pdf" path="res://assets/Tileset/Tilled Soil and wet soil.png" id="16_v7a5t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o48fc"]
 texture = ExtResource("2_vmc13")
@@ -5329,20 +5349,23 @@ sources/19 = SubResource("TileSetAtlasSource_e2wg4")
 sources/20 = SubResource("TileSetAtlasSource_5y2a6")
 
 [node name="TMap" type="Node2D" unique_id=1240453127]
+position = Vector2(1, -1)
 script = ExtResource("1_fu1nk")
 player_scene = ExtResource("2_o48fc")
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=475653172]
+position = Vector2(-22, 147)
 
 [node name="Marker2D" type="Marker2D" parent="SpawnPoints" unique_id=158766936]
-position = Vector2(165, 222)
+position = Vector2(-44, 9)
 gizmo_extents = 193.1
 
 [node name="Marker2D2" type="Marker2D" parent="SpawnPoints" unique_id=235801768]
-position = Vector2(202.18054, 110.52372)
+position = Vector2(40, 9)
 gizmo_extents = 193.1
 
 [node name="Players" type="Node2D" parent="." unique_id=159335388]
+position = Vector2(-24, 153)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=545811531]
 _spawnable_scenes = PackedStringArray("uid://d0udwekt8pmqj")
@@ -5373,3 +5396,14 @@ tile_map_data = PackedByteArray("AAADAA8ACgABAAIAAAAEAA8ACgABAAIAAAAFAA8ACgABAAI
 tile_set = SubResource("TileSet_uvkck")
 
 [node name="Node2D2" type="Node2D" parent="." unique_id=1584916946]
+position = Vector2(-41, 23)
+
+[node name="BallsContainer" type="Node2D" parent="." unique_id=694676643]
+position = Vector2(-13, -72)
+
+[node name="BallSpawner" type="MultiplayerSpawner" parent="." unique_id=1182196639]
+_spawnable_scenes = PackedStringArray("uid://d0udwekt8pmqj")
+spawn_path = NodePath("../BallsContainer")
+
+[node name="Hole" parent="." unique_id=396996812 instance=ExtResource("4_uvkck")]
+position = Vector2(289, -774)

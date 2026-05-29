@@ -314,7 +314,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D" unique_id=1216506587]
-collision_mask = 4
+collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_v6fml")
 
