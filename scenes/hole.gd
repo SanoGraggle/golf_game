@@ -1,36 +1,40 @@
 extends Area2D
 
+# Asegúrate de poner la ruta correcta hacia tu escena win_screen.tscn
+var win_screen_scene = preload("res://scenes/win_screen.tscn")
+
 func _ready() -> void:
-	# Conectamos la señal que detecta cuando un cuerpo entra al área
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	# REGLA DE ORO: Solo el servidor valida quién entra al agujero
 	if not multiplayer.is_server():
 		return
 		
 	if body.is_in_group("balls"):
-		# Extraemos el ID del ganador directamente del nombre de la pelota
-		var winner_string_id = body.name.replace("Ball_", "")
-		var winner_id = winner_string_id.to_int()
+		var winner_id = body.name.replace("Ball_", "").to_int()
 		
-		# Le decimos a TODOS los clientes (y al propio servidor local) quién ganó
+		# Llamamos al RPC para todos
 		announce_winner.rpc(winner_id)
-		
-		# Opcional: Eliminar la pelota para que no vuelva a chocar
 		body.queue_free()
 
-# Este RPC solo lo puede llamar el servidor ("authority"), 
-# pero se ejecuta en las pantallas de todos ("call_local")
 @rpc("authority", "call_local", "reliable")
 func announce_winner(winner_id: int) -> void:
 	var my_id = multiplayer.get_unique_id()
+	var am_i_winner = (my_id == winner_id)
 	
-	if my_id == winner_id:
-		print("¡Felicidades! Metiste la pelota y GANASTE LA PARTIDA.")
-	else:
-		print("Fin del juego. El ganador es el jugador: ", winner_id)
-		
-		# --- AQUÍ IRÁ TU LÓGICA VISUAL ---
-	# Ejemplo: Mostrar un panel que diga "Victoria", detener el movimiento 
-	# de los jugadores, o mostrar un botón de "Volver al Menú Principal".
+	# 1. Instanciar la pantalla de victoria
+	var win_screen_instance = win_screen_scene.instantiate()
+	
+	# 2. Crear el CanvasLayer y armar la jerarquía
+	var canvas = CanvasLayer.new()
+	canvas.layer = 100 
+	canvas.add_child(win_screen_instance)
+	
+	# 3. AÑADIR AL ÁRBOL PRIMERO (Esto dispara el _ready() y carga los @onready)
+	get_tree().root.add_child(canvas)
+	
+	# 4. AHORA SÍ llamamos a setup, porque los Labels ya existen en la memoria
+	win_screen_instance.setup(am_i_winner, winner_id)
+	
+	# 5. Pausar el juego (Opcional)
+	get_tree().paused = true
