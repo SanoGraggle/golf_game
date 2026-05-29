@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://epba40fx24rr" path="res://scenes/minimap.gd" id="1_map"]
+
+[node name="Minimap" type="CanvasLayer"]
+layer = 10
+
+[node name="MinimapControl" type="Control" parent="."]
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_map")

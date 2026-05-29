@@ -8,6 +8,14 @@ const SPEED = 150.0
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var camera: Camera2D = $Camera2D
 
+# --- Indicador de pelota fuera de pantalla ---
+var ball_indicator_scene: PackedScene = preload("res://scenes/ball_indicator.tscn")
+var _indicator_instance: CanvasLayer = null
+
+# --- Minimapa ---
+var minimap_scene: PackedScene = preload("res://scenes/minimap.tscn")
+var _minimap_instance: CanvasLayer = null
+
 func _process(_delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
 	if sprite and sprite.self_modulate != player_color:
@@ -36,6 +44,54 @@ func setup(data: Statics.PlayerData) -> void:
 	multiplayer_synchronizer.set_multiplayer_authority(data.id, false)
 	# Activar la cámara solo para el jugador local (debe ser después de set_multiplayer_authority)
 	camera.enabled = is_multiplayer_authority()
+	
+	# Si somos el jugador local, crear el indicador de pelota
+	if is_multiplayer_authority():
+		_setup_ball_indicator()
+
+func _setup_ball_indicator() -> void:
+	# Esperamos un poco para que la pelota se haya spawneado
+	# (el servidor las crea con 0.5s de delay, agregamos un poco más de margen)
+	await get_tree().create_timer(1.0).timeout
+	
+	var my_ball: RigidBody2D = _find_my_ball()
+	if my_ball == null:
+		# Reintentar una vez más después de otro segundo
+		await get_tree().create_timer(1.0).timeout
+		my_ball = _find_my_ball()
+	
+	if my_ball == null:
+		print("BallIndicator: No se encontró la pelota del jugador local")
+		return
+	
+	# Instanciar el indicador
+	_indicator_instance = ball_indicator_scene.instantiate()
+	add_child(_indicator_instance)
+	
+	# Configurar el indicador (el script está en el hijo IndicatorControl)
+	var indicator_control: Control = _indicator_instance.get_node("IndicatorControl")
+	if indicator_control and indicator_control.has_method("setup"):
+		indicator_control.setup(my_ball, camera)
+		print("BallIndicator: Indicador configurado para pelota ", my_ball.name)
+	
+	# Instanciar el minimapa
+	_minimap_instance = minimap_scene.instantiate()
+	add_child(_minimap_instance)
+	
+	var minimap_control: Control = _minimap_instance.get_node("MinimapControl")
+	if minimap_control and minimap_control.has_method("setup"):
+		minimap_control.setup(self, my_ball)
+		print("Minimap: Configurado para jugador local")
+
+func _find_my_ball() -> RigidBody2D:
+	var my_id: int = multiplayer.get_unique_id()
+	var target_ball_name: String = "Ball_" + str(my_id)
+	var balls: Array[Node] = get_tree().get_nodes_in_group("balls")
+	
+	for ball: Node in balls:
+		if ball.name == target_ball_name:
+			return ball as RigidBody2D
+	return null
 
 ###################################################################
 ####### Nueva implentacion de tiro con bolas con id ###############
