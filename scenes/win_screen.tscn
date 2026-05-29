@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://b7u7iemou2n4v"]
+
+[ext_resource type="Script" uid="uid://44a3pasiciuv" path="res://scenes/win_screen.gd" id="1_sx0tj"]
+[ext_resource type="Theme" uid="uid://c0r2crctatirx" path="res://scenes/world.tres" id="2_ago2m"]
+
+[node name="WinScreen" type="Control" unique_id=569392074]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ago2m")
+script = ExtResource("1_sx0tj")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=472119406]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=426057737]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer" unique_id=1341477499]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=238745997]
+layout_mode = 2
+theme = ExtResource("2_ago2m")
+theme_override_colors/font_color = Color(0.237197, 0.677741, 0.583056, 1)
+theme_override_font_sizes/font_size = 76
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinType" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1433336817]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.237197, 0.677741, 0.583056, 1)
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainMenu" type="Button" parent="MarginContainer/PanelContainer/VBoxContainer" unique_id=1445783300]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Main Menu"

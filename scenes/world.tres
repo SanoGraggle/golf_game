@@ -1,0 +1,15 @@
+[gd_resource type="Theme" format=3 uid="uid://c0r2crctatirx"]
+
+[ext_resource type="FontFile" uid="uid://c8pkgsqk5huvm" path="res://assets/Not Jam Third Dimension 19.ttf" id="1_gl5gg"]
+
+[resource]
+default_font = ExtResource("1_gl5gg")
+default_font_size = 18
+Label/colors/font_color = Color(0.85227, 0.582221, 0.94346, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 3
+Label/constants/shadow_offset_y = 0
+Label/constants/shadow_outline_size = 2
+Label/font_sizes/font_size = 38
+Label/fonts/font = ExtResource("1_gl5gg")
