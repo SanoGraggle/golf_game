@@ -49,6 +49,7 @@ func spawn_balls_delayed() -> void:
 func spawn_ball_for_player(peer_id: int, ball_color: Color, spawn_pos: Vector2) -> void:
 	var ball = ball_scene.instantiate()
 	ball.name = "Ball_" + str(peer_id)
+	ball.owner_peer_id = peer_id
 	ball.position = spawn_pos + Vector2(30, 0)
 	ball.ball_color = ball_color
 	

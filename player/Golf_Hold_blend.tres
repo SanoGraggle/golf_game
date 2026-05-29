@@ -1,0 +1,18 @@
+[gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://on8hyqouvrvd"]
+
+[ext_resource type="AnimationNodeBlendSpace2D" uid="uid://dsagqjcsvajys" path="res://player/golfclub_attack_blend_state.tres" id="1_br4c2"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_e0f0g"]
+
+[sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_5c2ek"]
+
+[resource]
+graph_offset = Vector2(-179.58513, -39.799)
+nodes/output/position = Vector2(706.6667, 133.33333)
+nodes/GolfBlend/node = ExtResource("1_br4c2")
+nodes/GolfBlend/position = Vector2(93.333336, 66.666664)
+nodes/HoldSeek/node = SubResource("AnimationNodeTimeSeek_5c2ek")
+nodes/HoldSeek/position = Vector2(320, 93.333336)
+nodes/HoldFreeze/node = SubResource("AnimationNodeTimeScale_e0f0g")
+nodes/HoldFreeze/position = Vector2(493.33334, 80)
+node_connections = [&"output", 0, &"HoldFreeze", &"HoldSeek", 0, &"GolfBlend", &"HoldFreeze", 0, &"HoldSeek"]

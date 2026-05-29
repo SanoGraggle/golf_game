@@ -2,7 +2,6 @@
 extends CharacterBody2D
 
 const SPEED = 150.0
-const JUMP_VELOCITY = -400.0
 
 @export var player_color: Color = Color.WHITE # Nueva variable sincronizada
 @onready var sprite: Sprite2D = $Sprite2D # Asegúrate de que el nombre coincida con tu nodo Sprite2D
@@ -16,17 +15,18 @@ func _process(_delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	if is_multiplayer_authority():
-		var direction_x := Input.get_axis("ui_left", "ui_right")
-		var direction_y := Input.get_axis("ui_up", "ui_down")
+		var direction_x := Input.get_axis("move_left", "move_right")
+		var direction_y := Input.get_axis("move_up", "move_down")
 
 		velocity.x = direction_x * SPEED if direction_x else move_toward(velocity.x, 0, SPEED)
 		velocity.y = direction_y * SPEED if direction_y else move_toward(velocity.y, 0, SPEED)
 		
-		if Input.is_action_just_pressed("ui_accept"):
-			var shot_direction = velocity.normalized()
-			if shot_direction == Vector2.ZERO:
-				shot_direction = Vector2.UP 
-			shoot_my_ball(shot_direction, 500.0)
+		handle_shot_input()
+		#if Input.is_action_just_pressed("ui_accept"):
+			#var shot_direction = velocity.normalized()
+			#if shot_direction == Vector2.ZERO:
+				#shot_direction = Vector2.UP 
+			#shoot_my_ball(shot_direction, 500.0)
 
 	move_and_slide()
 	
@@ -37,17 +37,67 @@ func setup(data: Statics.PlayerData) -> void:
 	# Activar la cámara solo para el jugador local (debe ser después de set_multiplayer_authority)
 	camera.enabled = is_multiplayer_authority()
 
-func shoot_my_ball(direction: Vector2, power: float) -> void:
-	var my_id = multiplayer.get_unique_id()
-	
-	# Construimos el nombre exacto que le dimos a la pelota en el servidor
-	var target_ball_name = "Ball_" + str(my_id)
-	var balls = get_tree().get_nodes_in_group("balls")
-	
-	for ball in balls:
+###################################################################
+####### Nueva implentacion de tiro con bolas con id ###############
+###################################################################
+
+const SHOT_RANGE := 48.0
+
+var is_charging_shot := false
+
+
+func handle_shot_input() -> void:
+	var ball := get_my_ball()
+
+	if Input.is_action_just_pressed("shoot"):
+		if can_begin_shot(ball):
+			is_charging_shot = true
+			ball.request_charge_start.rpc()
+
+	if Input.is_action_just_released("shoot") and is_charging_shot:
+		is_charging_shot = false
+
+		if ball == null:
+			return
+
+		var mouse_position: Vector2 = get_global_mouse_position()
+		ball.request_hit.rpc(mouse_position)
+
+
+func get_my_ball() -> Node2D:
+	var target_ball_name := "Ball_" + str(multiplayer.get_unique_id())
+
+	for ball in get_tree().get_nodes_in_group("balls"):
 		if ball.name == target_ball_name:
-			# Pelota encontrada de forma garantizada, enviamos RPC
-			ball.request_hit.rpc(direction, power)
-			return # Terminamos la función
+			return ball as Node2D
+
+	return null
+
+
+func can_begin_shot(ball: Node2D) -> bool:
+	if ball == null:
+		return false
+
+	if global_position.distance_to(ball.global_position) > SHOT_RANGE:
+		return false
+
+	if ball.has_method("is_stopped") and not ball.is_stopped():
+		return false
+
+	return true
+#
+
+#func shoot_my_ball(direction: Vector2, power: float) -> void:
+	#var my_id = multiplayer.get_unique_id()
+	#
+	## Construimos el nombre exacto que le dimos a la pelota en el servidor
+	#var target_ball_name = "Ball_" + str(my_id)
+	#var balls = get_tree().get_nodes_in_group("balls")
+	#
+	#for ball in balls:
+		#if ball.name == target_ball_name:
+			## Pelota encontrada de forma garantizada, enviamos RPC
+			#ball.request_hit.rpc(direction, power)
+			#return # Terminamos la función
 			
-	print("Error: No encontré mi pelota con el nombre: ", target_ball_name)
+	#print("Error: No encontré mi pelota con el nombre: ", target_ball_name)

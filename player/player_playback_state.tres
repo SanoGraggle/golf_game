@@ -1,6 +1,8 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://dycn3kyjvssa1"]
 
 [ext_resource type="AnimationNodeBlendSpace2D" uid="uid://ck34ipx63sp2a" path="res://player/idle_blend_state.tres" id="1_0p71l"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://on8hyqouvrvd" path="res://player/Golf_Hold_blend.tres" id="1_vbbmj"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://c4tp1kevf1wmx" path="res://player/Golf_Release_blend.tres" id="2_hjeit"]
 [ext_resource type="AnimationNodeBlendSpace2D" uid="uid://bwosbqaygn3cs" path="res://player/run_blend_state.tres" id="2_t6wqa"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
@@ -10,9 +12,23 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ukiy8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4gkrh"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_glwd3"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r7v8x"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6lwob"]
+
 [resource]
+states/GolfHold/node = ExtResource("1_vbbmj")
+states/GolfHold/position = Vector2(539.45685, 202.16461)
+states/GolfRelease/node = ExtResource("2_hjeit")
+states/GolfRelease/position = Vector2(540.963, 92.888885)
 states/Idle/node = ExtResource("1_0p71l")
 states/Idle/position = Vector2(365.2163, 99.38271)
 states/Walk/node = ExtResource("2_t6wqa")
 states/Walk/position = Vector2(365.9671, 202)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_70d11"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_khinc")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_70d11"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_khinc"), "Idle", "GolfHold", SubResource("AnimationNodeStateMachineTransition_ukiy8"), "Walk", "GolfHold", SubResource("AnimationNodeStateMachineTransition_4gkrh"), "GolfHold", "GolfRelease", SubResource("AnimationNodeStateMachineTransition_glwd3"), "GolfRelease", "Idle", SubResource("AnimationNodeStateMachineTransition_r7v8x"), "GolfRelease", "Walk", SubResource("AnimationNodeStateMachineTransition_6lwob")]

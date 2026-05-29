@@ -1,0 +1,19 @@
+[gd_resource type="AnimationNodeBlendSpace2D" format=3 uid="uid://dsagqjcsvajys"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qu4a1"]
+animation = &"golf_shoot_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_70d11"]
+animation = &"golf_shoot_up"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cw2d6"]
+animation = &"golf_shoot_right"
+
+[resource]
+blend_point_0/node = SubResource("AnimationNodeAnimation_qu4a1")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_70d11")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_cw2d6")
+blend_point_2/pos = Vector2(1, 0)
+blend_mode = 1

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bx3d78qgetgp5" path="res://scenes/player.gd" id="1_v6fml"]
 [ext_resource type="Texture2D" uid="uid://ovci6dol0c8g" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Idle.png" id="2_3li8b"]
 [ext_resource type="Script" uid="uid://cl56rgbrctish" path="res://scenes/player_animation.gd" id="3_3li8b"]
+[ext_resource type="Texture2D" uid="uid://cf1qsuwgedv1u" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Golf Club.png" id="3_70d11"]
 [ext_resource type="Texture2D" uid="uid://j4bi2napaom2" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Run.png" id="3_qu4a1"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://dycn3kyjvssa1" path="res://player/player_playback_state.tres" id="4_qu4a1"]
 
@@ -54,6 +55,126 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_bruh7"]
+resource_name = "golf_shoot_down"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_70d11")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_d3wef"]
+resource_name = "golf_shoot_right"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_70d11")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.39999998, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="Animation" id="Animation_6eyey"]
+resource_name = "golf_shoot_up"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_70d11")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.39999998, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
 }
 
 [sub_resource type="Animation" id="Animation_70d11"]
@@ -305,6 +426,9 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mdl7e"]
 _data = {
 &"RESET": SubResource("Animation_v6fml"),
+&"golf_shoot_down": SubResource("Animation_bruh7"),
+&"golf_shoot_right": SubResource("Animation_d3wef"),
+&"golf_shoot_up": SubResource("Animation_6eyey"),
 &"idle_down": SubResource("Animation_70d11"),
 &"idle_right": SubResource("Animation_khinc"),
 &"idle_up": SubResource("Animation_cw2d6"),
@@ -314,6 +438,8 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D" unique_id=1216506587]
+z_index = 3
+collision_layer = 8
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_v6fml")
@@ -339,6 +465,11 @@ libraries/ = SubResource("AnimationLibrary_mdl7e")
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=672135711]
 tree_root = ExtResource("4_qu4a1")
 anim_player = NodePath("../AnimationPlayer")
+parameters/GolfHold/GolfBlend/blend_position = Vector2(0, 0)
+parameters/GolfHold/HoldSeek/seek_request = -1.0
+parameters/GolfHold/HoldFreeze/scale = 1.0
+parameters/GolfRelease/GolfBlend/blend_position = Vector2(0, 0)
+parameters/GolfRelease/ReleaseSeek/seek_request = -1.0
 parameters/Idle/blend_position = Vector2(0, 0)
 parameters/Walk/blend_position = Vector2(0, 0)
 
@@ -347,7 +478,7 @@ script = ExtResource("3_3li8b")
 animation_tree = NodePath("../AnimationTree")
 sprite = NodePath("../Sprite2D")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=217749164]
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
