@@ -13,6 +13,7 @@ func _process(_delta: float) -> void:
 	if sprite and sprite.self_modulate != player_color:
 		sprite.self_modulate = player_color
 
+
 func _physics_process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		var direction_x := Input.get_axis("move_left", "move_right")
@@ -27,8 +28,8 @@ func _physics_process(_delta: float) -> void:
 			#if shot_direction == Vector2.ZERO:
 				#shot_direction = Vector2.UP 
 			#shoot_my_ball(shot_direction, 500.0)
-
-	move_and_slide()
+		move_and_slide()
+		update_velocity.rpc(velocity)
 	
 func setup(data: Statics.PlayerData) -> void:
 	name = str(data.id)
@@ -86,7 +87,9 @@ func can_begin_shot(ball: Node2D) -> bool:
 
 	return true
 #
-
+@rpc("unreliable_ordered","call_remote","authority")
+func update_velocity(v:Vector2) -> void:
+	velocity = v
 #func shoot_my_ball(direction: Vector2, power: float) -> void:
 	#var my_id = multiplayer.get_unique_id()
 	#
