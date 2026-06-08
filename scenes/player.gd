@@ -8,28 +8,25 @@ const SPEED = 150.0
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
 @onready var camera: Camera2D = $Camera2D
 
+@onready var input_synchronizer: InputSynchronizer = $InputSynchronizer
+@onready var sync_timer: Timer = $SyncTimer	
+
 func _process(_delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
 	if sprite and sprite.self_modulate != player_color:
 		sprite.self_modulate = player_color
 
-
 func _physics_process(_delta: float) -> void:
-	if is_multiplayer_authority():
-		var direction_x := Input.get_axis("move_left", "move_right")
-		var direction_y := Input.get_axis("move_up", "move_down")
+	var move_input: Vector2 = input_synchronizer.move_input
 
-		velocity.x = direction_x * SPEED if direction_x else move_toward(velocity.x, 0, SPEED)
-		velocity.y = direction_y * SPEED if direction_y else move_toward(velocity.y, 0, SPEED)
-		
+	velocity.x = move_input.x * SPEED if move_input.x else move_toward(velocity.x, 0, SPEED)
+	velocity.y = move_input.y * SPEED if move_input.y else move_toward(velocity.y, 0, SPEED)
+
+	move_and_slide()
+
+	if is_multiplayer_authority():
 		handle_shot_input()
-		#if Input.is_action_just_pressed("ui_accept"):
-			#var shot_direction = velocity.normalized()
-			#if shot_direction == Vector2.ZERO:
-				#shot_direction = Vector2.UP 
-			#shoot_my_ball(shot_direction, 500.0)
-		move_and_slide()
-		update_velocity.rpc(velocity)
+
 	
 func setup(data: Statics.PlayerData) -> void:
 	name = str(data.id)
@@ -37,6 +34,17 @@ func setup(data: Statics.PlayerData) -> void:
 	multiplayer_synchronizer.set_multiplayer_authority(data.id, false)
 	# Activar la cámara solo para el jugador local (debe ser después de set_multiplayer_authority)
 	camera.enabled = is_multiplayer_authority()
+	input_synchronizer.set_multiplayer_authority(data.id, false)
+	if is_multiplayer_authority():
+		sync_timer.start()
+
+func _on_sync_timer_timeout() -> void:
+	send_data.rpc(global_position, velocity)
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func send_data(pos: Vector2, vel: Vector2) -> void:
+	global_position = global_position.lerp(pos, 0.5)
+	velocity = velocity.lerp(vel, 0.5)
 
 ###################################################################
 ####### Nueva implentacion de tiro con bolas con id ###############
@@ -86,10 +94,10 @@ func can_begin_shot(ball: Node2D) -> bool:
 		return false
 
 	return true
-#
-@rpc("unreliable_ordered","call_remote","authority")
-func update_velocity(v:Vector2) -> void:
-	velocity = v
+
+
+	
+	
 #func shoot_my_ball(direction: Vector2, power: float) -> void:
 	#var my_id = multiplayer.get_unique_id()
 	#

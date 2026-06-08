@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ovci6dol0c8g" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Idle.png" id="2_3li8b"]
 [ext_resource type="Script" uid="uid://cl56rgbrctish" path="res://scenes/player_animation.gd" id="3_3li8b"]
 [ext_resource type="Texture2D" uid="uid://cf1qsuwgedv1u" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Golf Club.png" id="3_70d11"]
+[ext_resource type="Script" uid="uid://3jvhr7fibh6w" path="res://scenes/input_synchronizer.gd" id="3_cw2d6"]
 [ext_resource type="Texture2D" uid="uid://j4bi2napaom2" path="res://assets/Character and Portrait/Character/Pre-made/Lyria/Run.png" id="3_qu4a1"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://dycn3kyjvssa1" path="res://player/player_playback_state.tres" id="4_qu4a1"]
 
@@ -11,12 +12,14 @@
 radius = 6.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v6fml"]
-properties/0/path = NodePath("..:position")
+properties/0/path = NodePath("..:player_color")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("..:player_color")
-properties/1/spawn = true
-properties/1/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_khinc"]
+properties/0/path = NodePath("InputSynchronizer:move_input")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [sub_resource type="Animation" id="Animation_v6fml"]
 length = 0.001
@@ -459,6 +462,15 @@ frame = 2
 root_path = NodePath("../Sprite2D")
 replication_config = SubResource("SceneReplicationConfig_v6fml")
 
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=897441335]
+replication_interval = 0.05
+delta_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_khinc")
+script = ExtResource("3_cw2d6")
+
+[node name="SyncTimer" type="Timer" parent="." unique_id=738605796]
+wait_time = 0.1
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1060489308]
 libraries/ = SubResource("AnimationLibrary_mdl7e")
 
@@ -482,3 +494,5 @@ sprite = NodePath("../Sprite2D")
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+
+[connection signal="timeout" from="SyncTimer" to="." method="_on_sync_timer_timeout"]

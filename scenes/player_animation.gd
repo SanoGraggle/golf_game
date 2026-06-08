@@ -82,7 +82,7 @@ func apply_direction(blend_path: String, direction: Vector2) -> void:
 
 
 func update_movement_animation() -> void:
-	var current_velocity: Vector2 = player.velocity
+	var current_velocity: Vector2 = player.velocity	
 
 	if current_velocity.length() > 0.1:
 		apply_direction("parameters/Walk/blend_position", current_velocity.normalized())
