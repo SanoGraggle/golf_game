@@ -11,6 +11,18 @@ const SPEED = 150.0
 @onready var input_synchronizer: InputSynchronizer = $InputSynchronizer
 @onready var sync_timer: Timer = $SyncTimer	
 
+# --- Minimapa ---
+var minimap_scene: PackedScene = preload("res://scenes/minimap.tscn")
+var _minimap_instance: CanvasLayer = null
+
+# --- Indicador de pelota fuera de pantalla ---
+var ball_indicator_scene: PackedScene = preload("res://scenes/ball_indicator.tscn")
+var _indicator_instance: CanvasLayer = null
+
+# --- Barra de carga de tiro ---
+var charge_bar_script: GDScript = preload("res://scenes/charge_bar.gd")
+var _charge_bar: Node2D = null
+
 func _process(_delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
 	if sprite and sprite.self_modulate != player_color:
@@ -37,6 +49,45 @@ func setup(data: Statics.PlayerData) -> void:
 	input_synchronizer.set_multiplayer_authority(data.id, false)
 	if is_multiplayer_authority():
 		sync_timer.start()
+		_setup_hud()
+
+func _setup_hud() -> void:
+	# Esperamos a que la pelota se haya spawneado (el servidor las crea con delay)
+	await get_tree().create_timer(1.0).timeout
+	
+	var my_ball: Node2D = get_my_ball()
+	if my_ball == null:
+		# Reintentar una vez más
+		await get_tree().create_timer(1.0).timeout
+		my_ball = get_my_ball()
+	
+	if my_ball == null:
+		print("HUD: No se encontró la pelota del jugador local")
+		return
+	
+	# Instanciar el minimapa
+	_minimap_instance = minimap_scene.instantiate()
+	add_child(_minimap_instance)
+	
+	var minimap_control: Control = _minimap_instance.get_node("MinimapControl")
+	if minimap_control and minimap_control.has_method("setup"):
+		minimap_control.setup(self, my_ball)
+		print("Minimap: Configurado correctamente")
+	
+	# Instanciar el indicador de pelota fuera de pantalla
+	_indicator_instance = ball_indicator_scene.instantiate()
+	add_child(_indicator_instance)
+	
+	var indicator_control: Control = _indicator_instance.get_node("IndicatorControl")
+	if indicator_control and indicator_control.has_method("setup"):
+		indicator_control.setup(my_ball, camera)
+		print("BallIndicator: Configurado correctamente")
+	
+	# Crear la barra de carga (Node2D hijo del jugador, se mueve con él)
+	_charge_bar = Node2D.new()
+	_charge_bar.set_script(charge_bar_script)
+	add_child(_charge_bar)
+	print("ChargeBar: Configurada correctamente")
 
 func _on_sync_timer_timeout() -> void:
 	send_data.rpc(global_position, velocity)
@@ -62,9 +113,15 @@ func handle_shot_input() -> void:
 		if can_begin_shot(ball):
 			is_charging_shot = true
 			ball.request_charge_start.rpc()
+			# Activar la barra de carga visual
+			if _charge_bar and _charge_bar.has_method("start_charge"):
+				_charge_bar.start_charge()
 
 	if Input.is_action_just_released("shoot") and is_charging_shot:
 		is_charging_shot = false
+		# Desactivar la barra de carga visual
+		if _charge_bar and _charge_bar.has_method("stop_charge"):
+			_charge_bar.stop_charge()
 
 		if ball == null:
 			return
@@ -94,21 +151,3 @@ func can_begin_shot(ball: Node2D) -> bool:
 		return false
 
 	return true
-
-
-	
-	
-#func shoot_my_ball(direction: Vector2, power: float) -> void:
-	#var my_id = multiplayer.get_unique_id()
-	#
-	## Construimos el nombre exacto que le dimos a la pelota en el servidor
-	#var target_ball_name = "Ball_" + str(my_id)
-	#var balls = get_tree().get_nodes_in_group("balls")
-	#
-	#for ball in balls:
-		#if ball.name == target_ball_name:
-			## Pelota encontrada de forma garantizada, enviamos RPC
-			#ball.request_hit.rpc(direction, power)
-			#return # Terminamos la función
-			
-	#print("Error: No encontré mi pelota con el nombre: ", target_ball_name)

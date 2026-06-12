@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://minimap_scene_01"]
+
+[ext_resource type="Script" path="res://scenes/minimap.gd" id="1_map"]
+[ext_resource type="Script" path="res://scenes/minimap_icons.gd" id="2_icons"]
+
+[node name="Minimap" type="CanvasLayer"]
+layer = 10
+
+[node name="MinimapControl" type="Control" parent="."]
+mouse_filter = 2
+script = ExtResource("1_map")
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="MinimapControl"]
+offset_right = 160.0
+offset_bottom = 160.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="MinimapControl/ViewportContainer"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(160, 160)
+
+[node name="MinimapCamera" type="Camera2D" parent="MinimapControl/ViewportContainer/SubViewport"]
+
+[node name="IconOverlay" type="Control" parent="MinimapControl"]
+offset_right = 160.0
+offset_bottom = 160.0
+mouse_filter = 2
+script = ExtResource("2_icons")

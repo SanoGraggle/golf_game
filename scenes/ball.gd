@@ -13,9 +13,12 @@ const MAX_CHARGE_TIME := 1.25
 const STOPPED_SPEED := 10.0
 const STOP_SNAP_SPEED := 18.0
 const STOP_SNAP_DELAY := 0.25
+const SAND_DAMP := 5.0              ## linear_damp cuando está en arena (más alto = más lento)
 
 var charge_started_msec := -1
 var slow_time := 0.0
+var _agua_layer: TileMapLayer = null
+var _default_linear_damp: float = 0.0  ## Se guarda el linear_damp original del .tscn
 
 func get_owner_id() -> int:
 	if owner_peer_id != 0:
@@ -32,6 +35,8 @@ func _ready() -> void:
 	
 	# Guardamos la posición inicial para evitar saltos
 	last_position = position
+	# Guardamos el linear_damp original para restaurarlo cuando salga de la arena
+	_default_linear_damp = linear_damp
 	
 	if not multiplayer.is_server():
 		freeze_mode = RigidBody2D.FREEZE_MODE_KINEMATIC
@@ -45,6 +50,22 @@ func _physics_process(delta: float) -> void:
 
 	if freeze:
 		return
+
+	# Detección de arena: buscar la capa AGUA de forma lazy
+	if _agua_layer == null:
+		var root := get_tree().current_scene
+		if root:
+			_agua_layer = root.find_child("AGUA", true, false) as TileMapLayer
+
+	# Ajustar linear_damp según el terreno (arena = más fricción)
+	if _agua_layer != null:
+		var tile_coords := _agua_layer.local_to_map(_agua_layer.to_local(global_position))
+		if _agua_layer.get_cell_source_id(tile_coords) >= 0:
+			# La bola está sobre arena, aumentar el damping
+			linear_damp = SAND_DAMP
+		else:
+			# Terreno normal, restaurar damping original
+			linear_damp = _default_linear_damp
 
 	var speed: float = linear_velocity.length()
 
