@@ -6,6 +6,10 @@ extends Control
 @onready var join: Button = %Join
 @onready var credits: Button = %Credits
 @onready var quit: Button = %Quit
+@onready var golf_ball: TextureRect = %GolfBall
+
+var _time: float = 0.0
+var _ball_start_pos: Vector2
 
 
 func _ready() -> void:
@@ -19,3 +23,52 @@ func _ready() -> void:
 	credits.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://ui/credits.tscn"))
 	
 	host.grab_focus()
+	
+	_ball_start_pos = golf_ball.position
+	
+	_play_entrance_animations()
+	
+	for button: Button in [host, join, credits, quit]:
+		button.mouse_entered.connect(func() -> void: _on_button_hover(button))
+		button.mouse_exited.connect(func() -> void: _on_button_unhover(button))
+
+
+func _process(delta: float) -> void:
+	_time += delta
+	
+	# Golf ball gentle bob
+	golf_ball.position.y = _ball_start_pos.y + sin(_time * 2.0) * 6.0
+	golf_ball.rotation = sin(_time * 1.5) * 0.05
+
+
+func _play_entrance_animations() -> void:
+	# Title fade in
+	var title_container: VBoxContainer = $TitleSection
+	title_container.modulate.a = 0.0
+	var tween_title: Tween = create_tween()
+	tween_title.tween_property(title_container, "modulate:a", 1.0, 0.6).set_ease(Tween.EASE_OUT)
+	
+	# Golf ball bounce in
+	golf_ball.scale = Vector2.ZERO
+	var tween_ball: Tween = create_tween()
+	tween_ball.tween_property(golf_ball, "scale", Vector2.ONE, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(0.3)
+	
+	# Buttons slide in from below
+	var button_container: VBoxContainer = $ButtonSection
+	var original_pos: float = button_container.position.y
+	button_container.position.y += 60.0
+	button_container.modulate.a = 0.0
+	var tween_buttons: Tween = create_tween()
+	tween_buttons.set_parallel(true)
+	tween_buttons.tween_property(button_container, "position:y", original_pos, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(0.5)
+	tween_buttons.tween_property(button_container, "modulate:a", 1.0, 0.4).set_delay(0.5)
+
+
+func _on_button_hover(button: Button) -> void:
+	var tween: Tween = create_tween()
+	tween.tween_property(button, "scale", Vector2(1.05, 1.05), 0.1).set_ease(Tween.EASE_OUT)
+
+
+func _on_button_unhover(button: Button) -> void:
+	var tween: Tween = create_tween()
+	tween.tween_property(button, "scale", Vector2.ONE, 0.1).set_ease(Tween.EASE_OUT)

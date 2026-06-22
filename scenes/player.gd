@@ -1,7 +1,12 @@
 # player.gd
 extends CharacterBody2D
 
-const SPEED = 150.0
+const BASE_SPEED := 150.0
+var current_speed := BASE_SPEED
+
+## Speed boost (monedas)
+var _speed_boost_multiplier := 1.0
+var _boost_timer: Timer = null
 
 @export var player_color: Color = Color.WHITE # Nueva variable sincronizada
 @onready var sprite: Sprite2D = $Sprite2D # Asegúrate de que el nombre coincida con tu nodo Sprite2D
@@ -31,8 +36,8 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float) -> void:
 	var move_input: Vector2 = input_synchronizer.move_input
 
-	velocity.x = move_input.x * SPEED if move_input.x else move_toward(velocity.x, 0, SPEED)
-	velocity.y = move_input.y * SPEED if move_input.y else move_toward(velocity.y, 0, SPEED)
+	velocity.x = move_input.x * current_speed if move_input.x else move_toward(velocity.x, 0, current_speed)
+	velocity.y = move_input.y * current_speed if move_input.y else move_toward(velocity.y, 0, current_speed)
 
 	move_and_slide()
 
@@ -151,3 +156,46 @@ func can_begin_shot(ball: Node2D) -> bool:
 		return false
 
 	return true
+
+
+## Aplica un boost de velocidad temporal (monedas)
+func apply_speed_boost(multiplier: float, duration: float) -> void:
+	_speed_boost_multiplier = multiplier
+	current_speed = BASE_SPEED * _speed_boost_multiplier
+
+	# Crear o reiniciar el timer del boost
+	if _boost_timer != null:
+		_boost_timer.stop()
+		_boost_timer.queue_free()
+
+	_boost_timer = Timer.new()
+	_boost_timer.wait_time = duration
+	_boost_timer.one_shot = true
+	_boost_timer.timeout.connect(_on_boost_timeout)
+	add_child(_boost_timer)
+	_boost_timer.start()
+
+	# Efecto visual en todos los clientes
+	_show_boost_effect.rpc()
+
+func _on_boost_timeout() -> void:
+	_speed_boost_multiplier = 1.0
+	current_speed = BASE_SPEED
+	if _boost_timer != null:
+		_boost_timer.queue_free()
+		_boost_timer = null
+	_hide_boost_effect.rpc()
+
+@rpc("authority", "call_local", "reliable")
+func _show_boost_effect() -> void:
+	# Tinte dorado mientras dure el boost
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(1.0, 0.85, 0.0), 0.2)
+
+@rpc("authority", "call_local", "reliable")
+func _hide_boost_effect() -> void:
+	# Restaurar el color original del jugador
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", player_color, 0.3)

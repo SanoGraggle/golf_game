@@ -11,6 +11,51 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0ce57")
 
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.2, 0.08, 1)
+
+[node name="GrassStripe" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.14, 0.28, 0.1, 1)
+
+[node name="GrassLine" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.84
+anchor_right = 1.0
+anchor_bottom = 0.86
+grow_horizontal = 2
+color = Color(0.18, 0.36, 0.12, 1)
+
+[node name="TopAccent" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.015
+grow_horizontal = 2
+color = Color(0.36, 0.22, 0.09, 1)
+
+[node name="BottomAccent" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.985
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+color = Color(0.36, 0.22, 0.09, 1)
+
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -58,9 +103,9 @@ anchor_right = 0.5
 anchor_bottom = 0.9
 offset_left = -314.0
 offset_top = -68.0
-offset_right = -250.0
+offset_right = -240.0
 offset_bottom = -4.0
-text = "く"
+text = "< BACK"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/VBoxContainer"]
 layout_mode = 2

@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://bkujbpmduf4li" path="res://assets/COSAS/water stones.png" id="13_6ymdo"]
 [ext_resource type="Texture2D" uid="uid://h7b1xns18u0e" path="res://assets/COSAS/PropsWater Summer.png" id="14_v7a5t"]
 [ext_resource type="Texture2D" uid="uid://daufgynue3pdf" path="res://assets/Tileset/Tilled Soil and wet soil.png" id="16_v7a5t"]
+[ext_resource type="PackedScene" path="res://scenes/coin.tscn" id="17_coin"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o48fc"]
 texture = ExtResource("2_vmc13")
@@ -5406,4 +5407,21 @@ _spawnable_scenes = PackedStringArray("uid://d0udwekt8pmqj")
 spawn_path = NodePath("../BallsContainer")
 
 [node name="Hole" parent="." unique_id=396996812 instance=ExtResource("4_uvkck")]
-position = Vector2(289, -774)
+position = Vector2(324, -757)
+
+[node name="Coins" type="Node2D" parent="." unique_id=459707583]
+
+[node name="Coin1" parent="Coins" unique_id=1705796890 instance=ExtResource("17_coin")]
+position = Vector2(141, -421)
+
+[node name="Coin2" parent="Coins" unique_id=1809143386 instance=ExtResource("17_coin")]
+position = Vector2(64, -124)
+
+[node name="Coin3" parent="Coins" unique_id=2043130372 instance=ExtResource("17_coin")]
+position = Vector2(316, -586)
+
+[node name="Coin4" parent="Coins" unique_id=1120945399 instance=ExtResource("17_coin")]
+position = Vector2(514, -494)
+
+[node name="Coin5" parent="Coins" unique_id=1967964967 instance=ExtResource("17_coin")]
+position = Vector2(320, -188)

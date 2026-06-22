@@ -177,6 +177,3 @@ func request_hit(mouse_position: Vector2) -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	apply_central_impulse(impulse_direction.normalized() * impulse_power)
-		
-
- 

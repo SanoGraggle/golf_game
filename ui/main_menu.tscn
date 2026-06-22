@@ -1,92 +1,174 @@
 [gd_scene format=3 uid="uid://buxla4a3c3k2"]
 
-[ext_resource type="Theme" uid="uid://bwgdrcgopd0s1" path="res://lobby/lobby_theme.tres" id="1_3qnx1"]
-[ext_resource type="Script" uid="uid://cnbk17iq1x68f" path="res://ui/main_menu.gd" id="2_p6ygj"]
-[ext_resource type="Texture2D" uid="uid://tw8t38ns0seh" path="res://icon.svg" id="2_xllby"]
+[ext_resource type="Theme" uid="uid://bwgdrcgopd0s1" path="res://lobby/lobby_theme.tres" id="1_theme"]
+[ext_resource type="Script" uid="uid://cnbk17iq1x68f" path="res://ui/main_menu.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://dj5jeekxb1kb0" path="res://assets/golf.png" id="3_golf"]
+[ext_resource type="Texture2D" uid="uid://cldmjiobksnir" path="res://assets/hole.png" id="4_hole"]
 
-[node name="MainMenu" type="Control" unique_id=90432305]
+[node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_3qnx1")
-script = ExtResource("2_p6ygj")
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=953531144]
+[node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 140.0
-offset_top = -160.0
-offset_right = 640.0
-offset_bottom = 220.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.1, 0.2, 0.08, 1)
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer" unique_id=929965828]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Host" type="Button" parent="MarginContainer/VBoxContainer2" unique_id=923655091]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Host"
-
-[node name="Join" type="Button" parent="MarginContainer/VBoxContainer2" unique_id=771461010]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Join"
-
-[node name="Credits" type="Button" parent="MarginContainer/VBoxContainer2" unique_id=1427127326]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Credits"
-
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer2" unique_id=1446357876]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Quit"
-
-[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=95552055]
+[node name="GrassStripe" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -490.0
-offset_top = -160.0
-offset_right = -34.0
-offset_bottom = 256.0
+anchors_preset = -1
+anchor_top = 0.82
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.14, 0.28, 0.1, 1)
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer2" unique_id=389958185]
-custom_minimum_size = Vector2(256, 256)
-layout_mode = 2
-texture = ExtResource("2_xllby")
-
-[node name="MarginContainer3" type="MarginContainer" parent="." unique_id=658664263]
+[node name="GrassLine" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -417.5
-offset_top = -360.0
-offset_right = 417.5
-offset_bottom = -112.0
+anchors_preset = -1
+anchor_top = 0.81
+anchor_right = 1.0
+anchor_bottom = 0.83
 grow_horizontal = 2
-grow_vertical = 2
+color = Color(0.18, 0.36, 0.12, 1)
 
-[node name="Label" type="Label" parent="MarginContainer3" unique_id=1435848050]
+[node name="TopBar" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.02
+grow_horizontal = 2
+color = Color(0.36, 0.22, 0.09, 1)
+
+[node name="BottomBar" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.98
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+color = Color(0.36, 0.22, 0.09, 1)
+
+[node name="TitleSection" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.08
+anchor_right = 0.5
+anchor_bottom = 0.08
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 280.0
+grow_horizontal = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="TitleSection"]
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Multiplayer Example"
+theme_override_font_sizes/font_size = 64
+text = "GOLF GAME"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 0.5, 0.7)
+theme_override_font_sizes/font_size = 14
+text = "~ Multiplayer Edition ~"
+horizontal_alignment = 1
+
+[node name="DecoContainer" type="HBoxContainer" parent="TitleSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Flag1" type="TextureRect" parent="TitleSection/DecoContainer"]
+custom_minimum_size = Vector2(48, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_hole")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GolfBall" type="TextureRect" parent="TitleSection/DecoContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_golf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flag2" type="TextureRect" parent="TitleSection/DecoContainer"]
+custom_minimum_size = Vector2(48, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_hole")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonSection" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.58
+anchor_right = 0.5
+anchor_bottom = 0.58
+offset_left = -140.0
+offset_right = 140.0
+offset_bottom = 240.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="Host" type="Button" parent="ButtonSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "HOST GAME"
+
+[node name="Join" type="Button" parent="ButtonSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "JOIN GAME"
+
+[node name="Credits" type="Button" parent="ButtonSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "CREDITS"
+
+[node name="Quit" type="Button" parent="ButtonSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "QUIT"
+
+[node name="VersionLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.65, 0.45, 0.5)
+theme_override_font_sizes/font_size = 12
+text = "v0.1 - Early Access"
+horizontal_alignment = 2

@@ -86,4 +86,5 @@ ai_assistant_hub/preferences/audio_hints=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.1287, 0.24612503, 0.33, 1)
