@@ -8,6 +8,17 @@ var current_speed := BASE_SPEED
 var _speed_boost_multiplier := 1.0
 var _boost_timer: Timer = null
 
+## Freeze power-up (moneda de hielo)
+var is_frozen := false
+var _freeze_timer: Timer = null
+var _ice_sprite: Sprite2D = null
+
+## Contadores de tiempo restante de power-ups (local, cada peer lo decrementa)
+var _boost_time_remaining := 0.0
+var _freeze_time_remaining := 0.0
+var _boost_countdown_label: Label = null
+var _freeze_countdown_label: Label = null
+
 @export var player_color: Color = Color.WHITE # Nueva variable sincronizada
 @onready var sprite: Sprite2D = $Sprite2D # Asegúrate de que el nombre coincida con tu nodo Sprite2D
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
@@ -28,12 +39,32 @@ var _indicator_instance: CanvasLayer = null
 var charge_bar_script: GDScript = preload("res://scenes/charge_bar.gd")
 var _charge_bar: Node2D = null
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
-	if sprite and sprite.self_modulate != player_color:
+	# No sobreescribir si hay un efecto visual activo (freeze o boost)
+	if sprite and sprite.self_modulate != player_color and not is_frozen and _speed_boost_multiplier <= 1.0:
 		sprite.self_modulate = player_color
 
+	# Actualizar contadores de power-ups
+	if _boost_time_remaining > 0.0:
+		_boost_time_remaining -= delta
+		if _boost_time_remaining < 0.0:
+			_boost_time_remaining = 0.0
+		_update_countdown_label(_boost_countdown_label, _boost_time_remaining)
+
+	if _freeze_time_remaining > 0.0:
+		_freeze_time_remaining -= delta
+		if _freeze_time_remaining < 0.0:
+			_freeze_time_remaining = 0.0
+		_update_countdown_label(_freeze_countdown_label, _freeze_time_remaining)
+
 func _physics_process(_delta: float) -> void:
+	# Si está congelado, no se puede mover
+	if is_frozen:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
 	var move_input: Vector2 = input_synchronizer.move_input
 
 	velocity.x = move_input.x * current_speed if move_input.x else move_toward(velocity.x, 0, current_speed)
@@ -159,11 +190,9 @@ func can_begin_shot(ball: Node2D) -> bool:
 
 
 ## Aplica un boost de velocidad temporal (monedas)
+## Llamado solo en el servidor desde coin.gd
 func apply_speed_boost(multiplier: float, duration: float) -> void:
-	_speed_boost_multiplier = multiplier
-	current_speed = BASE_SPEED * _speed_boost_multiplier
-
-	# Crear o reiniciar el timer del boost
+	# Crear o reiniciar el timer del boost (solo en el servidor)
 	if _boost_timer != null:
 		_boost_timer.stop()
 		_boost_timer.queue_free()
@@ -175,27 +204,214 @@ func apply_speed_boost(multiplier: float, duration: float) -> void:
 	add_child(_boost_timer)
 	_boost_timer.start()
 
-	# Efecto visual en todos los clientes
-	_show_boost_effect.rpc()
+	# Sincronizar el estado de velocidad a TODOS los peers
+	_sync_boost_start.rpc(multiplier, duration)
 
 func _on_boost_timeout() -> void:
-	_speed_boost_multiplier = 1.0
-	current_speed = BASE_SPEED
 	if _boost_timer != null:
 		_boost_timer.queue_free()
 		_boost_timer = null
-	_hide_boost_effect.rpc()
+	# Sincronizar el fin del boost a TODOS los peers
+	_sync_boost_end.rpc()
 
-@rpc("authority", "call_local", "reliable")
-func _show_boost_effect() -> void:
-	# Tinte dorado mientras dure el boost
+@rpc("any_peer", "call_local", "reliable")
+func _sync_boost_start(multiplier: float, duration: float) -> void:
+	_speed_boost_multiplier = multiplier
+	current_speed = BASE_SPEED * _speed_boost_multiplier
+	_boost_time_remaining = duration
+	# Efecto visual: tinte dorado
 	if sprite:
 		var tween: Tween = create_tween()
 		tween.tween_property(sprite, "self_modulate", Color(1.0, 0.85, 0.0), 0.2)
+	# Crear label de countdown (solo en este jugador)
+	if is_multiplayer_authority():
+		_remove_countdown_label(_boost_countdown_label)
+		_boost_countdown_label = _create_countdown_label(Color(1.0, 0.85, 0.0), Vector2(0, -28))
 
-@rpc("authority", "call_local", "reliable")
-func _hide_boost_effect() -> void:
-	# Restaurar el color original del jugador
+@rpc("any_peer", "call_local", "reliable")
+func _sync_boost_end() -> void:
+	_speed_boost_multiplier = 1.0
+	current_speed = BASE_SPEED
+	_boost_time_remaining = 0.0
+	# Restaurar color original
 	if sprite:
 		var tween: Tween = create_tween()
 		tween.tween_property(sprite, "self_modulate", player_color, 0.3)
+	# Eliminar label de countdown
+	_remove_countdown_label(_boost_countdown_label)
+	_boost_countdown_label = null
+
+## ============================================================
+## Freeze power-up (moneda de hielo) — congela al rival
+## ============================================================
+
+## Aplica congelamiento al jugador (solo el servidor llama esto)
+func apply_freeze(duration: float) -> void:
+	# Crear o reiniciar el timer del freeze (solo en el servidor)
+	if _freeze_timer != null:
+		_freeze_timer.stop()
+		_freeze_timer.queue_free()
+
+	_freeze_timer = Timer.new()
+	_freeze_timer.wait_time = duration
+	_freeze_timer.one_shot = true
+	_freeze_timer.timeout.connect(_on_freeze_timeout)
+	add_child(_freeze_timer)
+	_freeze_timer.start()
+
+	# Sincronizar el estado de freeze a TODOS los peers
+	_sync_freeze_start.rpc(duration)
+
+func _on_freeze_timeout() -> void:
+	if _freeze_timer != null:
+		_freeze_timer.queue_free()
+		_freeze_timer = null
+	# Sincronizar el fin del freeze a TODOS los peers
+	_sync_freeze_end.rpc()
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_freeze_start(duration: float) -> void:
+	is_frozen = true
+	velocity = Vector2.ZERO
+	_freeze_time_remaining = duration
+	# Crear label de countdown (solo en este jugador)
+	if is_multiplayer_authority():
+		_remove_countdown_label(_freeze_countdown_label)
+		_freeze_countdown_label = _create_countdown_label(Color(0.5, 0.85, 1.0), Vector2(0, -28))
+
+	# Tinte celeste mientras dure el freeze
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(0.5, 0.85, 1.0), 0.15)
+
+	# Crear sprite de cubo de hielo encima del jugador
+	if _ice_sprite == null:
+		_ice_sprite = Sprite2D.new()
+		_ice_sprite.name = "IceCubeOverlay"
+		# Dibujar un cubo de hielo celeste proceduralmente
+		var img := Image.create(20, 24, false, Image.FORMAT_RGBA8)
+		var ice_color := Color(0.55, 0.88, 1.0, 0.7)
+		var ice_border := Color(0.3, 0.7, 0.95, 0.9)
+		var ice_highlight := Color(0.85, 0.95, 1.0, 0.9)
+
+		# Rellenar el cubo
+		for y in range(2, 22):
+			for x in range(2, 18):
+				img.set_pixel(x, y, ice_color)
+
+		# Bordes del cubo
+		for x in range(1, 19):
+			img.set_pixel(x, 1, ice_border)
+			img.set_pixel(x, 22, ice_border)
+		for y in range(1, 23):
+			img.set_pixel(1, y, ice_border)
+			img.set_pixel(18, y, ice_border)
+
+		# Esquinas redondeadas
+		img.set_pixel(1, 1, Color.TRANSPARENT)
+		img.set_pixel(18, 1, Color.TRANSPARENT)
+		img.set_pixel(1, 22, Color.TRANSPARENT)
+		img.set_pixel(18, 22, Color.TRANSPARENT)
+
+		# Brillo/highlight en la esquina superior izquierda
+		for y in range(3, 8):
+			for x in range(3, 7):
+				img.set_pixel(x, y, ice_highlight)
+
+		# Línea diagonal de brillo
+		for i in range(5):
+			if 3 + i < 18 and 3 + i < 22:
+				img.set_pixel(3 + i, 3 + i, ice_highlight)
+
+		var tex := ImageTexture.create_from_image(img)
+		_ice_sprite.texture = tex
+		_ice_sprite.position = Vector2(0, -8)
+		_ice_sprite.z_index = 5
+		add_child(_ice_sprite)
+
+	# Animación de aparición
+	_ice_sprite.scale = Vector2.ZERO
+	_ice_sprite.modulate = Color(1, 1, 1, 1)
+	var appear_tween: Tween = create_tween()
+	appear_tween.tween_property(_ice_sprite, "scale", Vector2(1.2, 1.2), 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_freeze_end() -> void:
+	is_frozen = false
+	_freeze_time_remaining = 0.0
+
+	# Restaurar color original
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", player_color, 0.3)
+	# Eliminar label de countdown
+	_remove_countdown_label(_freeze_countdown_label)
+	_freeze_countdown_label = null
+
+	# Animación de desaparición del cubo de hielo
+	if _ice_sprite != null:
+		var disappear_tween: Tween = create_tween()
+		disappear_tween.set_parallel(true)
+		disappear_tween.tween_property(_ice_sprite, "scale", Vector2(2.0, 2.0), 0.3).set_ease(Tween.EASE_IN)
+		disappear_tween.tween_property(_ice_sprite, "modulate:a", 0.0, 0.3)
+		disappear_tween.set_parallel(false)
+		disappear_tween.tween_callback(_remove_ice_sprite)
+
+func _remove_ice_sprite() -> void:
+	if _ice_sprite != null:
+		_ice_sprite.queue_free()
+		_ice_sprite = null
+
+## ============================================================
+## Countdown labels para power-ups
+## ============================================================
+
+func _create_countdown_label(color: Color, offset: Vector2) -> Label:
+	var label := Label.new()
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.position = offset - Vector2(30, 0)
+	label.size = Vector2(60, 20)
+	label.z_index = 10
+
+	# Estilo del texto
+	label.add_theme_font_size_override("font_size", 8)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	label.add_theme_constant_override("shadow_offset_x", 1)
+	label.add_theme_constant_override("shadow_offset_y", 1)
+
+	# Fondo con panel estilizado
+	var panel := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(color.r, color.g, color.b, 0.35)
+	style.border_color = Color(color.r, color.g, color.b, 0.7)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(3)
+	style.set_content_margin_all(2)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.position = offset - Vector2(22, 0)
+	panel.size = Vector2(44, 16)
+	panel.z_index = 9
+	panel.name = "CountdownPanel"
+
+	add_child(panel)
+	add_child(label)
+
+	# Guardar referencia al panel en el label para limpiar después
+	label.set_meta("panel_ref", panel)
+	return label
+
+func _update_countdown_label(label: Label, time_remaining: float) -> void:
+	if label == null:
+		return
+	label.text = "%.1fs" % time_remaining
+
+func _remove_countdown_label(label: Label) -> void:
+	if label == null:
+		return
+	# Eliminar el panel asociado
+	if label.has_meta("panel_ref"):
+		var panel: Node = label.get_meta("panel_ref")
+		if panel != null and is_instance_valid(panel):
+			panel.queue_free()
+	label.queue_free()
