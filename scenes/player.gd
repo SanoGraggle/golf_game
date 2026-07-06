@@ -3,7 +3,6 @@ extends CharacterBody2D
 
 #### Sounds 
 @onready var sfx_player: AudioStreamPlayer2D = $SFX_Player
-@onready var shot_sfx: AudioStreamPlayer2D = $ShotSFX
 
 @onready var weak_shot_stream: AudioStream = load("res://assets/Sounds/Weak_Golf_Shot.wav")
 @onready var medium_shot_stream: AudioStream = load("res://assets/Sounds/Medium_Golf_Shot.wav")
@@ -11,6 +10,7 @@ extends CharacterBody2D
 
 @onready var speed_power_up_stream: AudioStream = load("res://assets/Sounds/Speed_Power_up.ogg")
 @onready var freeze_power_up_stream: AudioStream = load("res://assets/Sounds/Freeze_Power_up.wav")
+@onready var oof_stream: AudioStream = load("res://assets/Sounds/Oof.mp3")
 
 
 const BASE_SPEED := 150.0
@@ -54,6 +54,10 @@ var _charge_bar: Node2D = null
 
 func _ready() -> void:
 	add_to_group("players") # Vital para poder buscar a los rivales
+	
+	var ball_hit_box: Area2D = $BallHitBox
+	if ball_hit_box != null:
+		ball_hit_box.body_entered.connect(_on_ball_hit_box_body_entered)
 	
 func _process(delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
@@ -290,6 +294,8 @@ func apply_knockback_and_stun(knockback_velocity: Vector2, stun_duration: float)
 	is_stunned = true
 	velocity = knockback_velocity
 	
+	play_oof_sound.rpc()
+	
 	if is_charging_shot:
 		is_shot_cancelled = true
 		is_charging_shot = false
@@ -299,6 +305,43 @@ func apply_knockback_and_stun(knockback_velocity: Vector2, stun_duration: float)
 	# Restaurar el estado de aturdimiento después del tiempo correspondiente
 	var timer = get_tree().create_timer(stun_duration)
 	timer.timeout.connect(func(): is_stunned = false)
+
+
+func _on_ball_hit_box_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("balls"):
+		return
+	
+	var ball := body as RigidBody2D
+	if ball == null:
+		return
+	
+	# Only the server applies the hit so all clients stay in sync.
+	if not multiplayer.is_server():
+		return
+	
+	# Ignore very slow balls.
+	var ball_speed: float = ball.linear_velocity.length()
+	if ball_speed < 50.0:
+		return
+	
+	# Avoid hitting the owner's own ball.
+	if ball.name == "Ball_" + str(name):
+		return
+	
+	var knockback_direction: Vector2 = (global_position - ball.global_position).normalized()
+	if knockback_direction.length() == 0:
+		knockback_direction = Vector2.RIGHT
+	
+	var knockback_power: float = clampf(ball_speed * 0.5, 100.0, 400.0)
+	var stun_duration: float = 0.5
+	apply_knockback_and_stun.rpc(knockback_direction * knockback_power, stun_duration)
+
+
+@rpc("authority", "call_local", "reliable")
+func play_oof_sound() -> void:
+	if sfx_player != null and oof_stream != null:
+		sfx_player.stream = oof_stream
+		sfx_player.play()
 
 
 ## Aplica un boost de velocidad temporal (monedas)
@@ -477,16 +520,16 @@ func _sync_freeze_end() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func play_shot_sound(charge_ratio: float) -> void:
-	if shot_sfx == null:
+	if sfx_player == null:
 		return
 	if charge_ratio < 0.33:
-		shot_sfx.stream = weak_shot_stream
+		sfx_player.stream = weak_shot_stream
 	elif charge_ratio < 0.66:
-		shot_sfx.stream = medium_shot_stream
+		sfx_player.stream = medium_shot_stream
 	else:
-		shot_sfx.stream = strong_shot_stream
-	if shot_sfx.stream != null:
-		shot_sfx.play()
+		sfx_player.stream = strong_shot_stream
+	if sfx_player.stream != null:
+		sfx_player.play()
 
 func _remove_ice_sprite() -> void:
 	if _ice_sprite != null:

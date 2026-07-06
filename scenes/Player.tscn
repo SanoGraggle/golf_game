@@ -497,6 +497,11 @@ position_smoothing_speed = 8.0
 
 [node name="SFX_Player" type="AudioStreamPlayer2D" parent="." unique_id=1981490346]
 
-[node name="ShotSFX" type="AudioStreamPlayer2D" parent="." unique_id=1981490347]
+[node name="BallHitBox" type="Area2D" parent="." unique_id=1981490349]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallHitBox" unique_id=1981490350]
+shape = SubResource("CircleShape2D_v6fml")
 
 [connection signal="timeout" from="SyncTimer" to="." method="_on_sync_timer_timeout"]
