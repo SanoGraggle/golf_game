@@ -9,9 +9,7 @@ func _ready() -> void:
 	if win_type:
 		win_type.hide()
 		
-#	main_menu.pressed.connect(_on_main_menu_pressed)
-
-# Esta función la llamaremos desde el RPC cuando alguien emboque la pelota
+	main_menu.pressed.connect(_on_main_menu_pressed)
 
 # Esta función la llamamos desde el agujero
 func setup(is_winner: bool, winner_id: int) -> void:
@@ -32,17 +30,25 @@ func setup(is_winner: bool, winner_id: int) -> void:
 		label.text = "¡HAS PERDIDO!\nEl Jugador " + str(player_number) + " metió la pelota."
 		# Opcional: Color rojo para el perdedor
 		label.add_theme_color_override("font_color", Color.CRIMSON)
-"""
+
+
 func _on_main_menu_pressed() -> void:
 	# 1. QUITAR LA PAUSA: Fundamental para que el menú principal 
 	# y la siguiente partida no se queden congelados.
 	get_tree().paused = false
 	
 	# 2. ARQUITECTURA MULTIJUGADOR: Apagar el peer de red local
-	if multiplayer.multiplayer_peer:
+	if multiplayer.multiplayer_peer and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		multiplayer.multiplayer_peer.close()
-		multiplayer.multiplayer_peer = null
+		multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	
+	# 3. Limpiar datos de jugadores
+	Game.players = []
+	
+	# 4. Eliminar el CanvasLayer padre donde estamos montados
+	var canvas_parent: Node = get_parent()
+	if canvas_parent is CanvasLayer:
+		canvas_parent.queue_free()
 		
-	# 3. Cambiar de escena
-	get_tree().change_scene_to_file("res://menu/main_menu.tscn")
-	"""
+	# 5. Cambiar de escena
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")

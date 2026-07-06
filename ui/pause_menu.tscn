@@ -1,0 +1,190 @@
+[gd_scene format=3 uid="uid://pause_menu_scene1"]
+
+[ext_resource type="Theme" uid="uid://bwgdrcgopd0s1" path="res://lobby/lobby_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://ui/pause_menu.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_bg"]
+bg_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_panel"]
+content_margin_left = 40.0
+content_margin_top = 32.0
+content_margin_right = 40.0
+content_margin_bottom = 32.0
+bg_color = Color(0.1, 0.18, 0.08, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.36, 0.22, 0.09, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.06, 0.12, 0.05, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36, 0.22, 0.09, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.69, 0.42, 0.18, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber_area"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.69, 0.42, 0.18, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sep"]
+bg_color = Color(0.36, 0.22, 0.09, 0.4)
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 110
+process_mode = 3
+script = ExtResource("2_script")
+
+[node name="PausePanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause_bg")
+
+[node name="CenterContainer" type="CenterContainer" parent="PausePanel"]
+layout_mode = 2
+
+[node name="InnerPanel" type="PanelContainer" parent="PausePanel/CenterContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause_panel")
+
+[node name="MainPanel" type="VBoxContainer" parent="PausePanel/CenterContainer/InnerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Separator1" type="HSeparator" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_sep")
+
+[node name="ResumeButton" type="Button" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RESUME"
+
+[node name="OptionsButton" type="Button" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "OPTIONS"
+
+[node name="Separator2" type="HSeparator" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_sep")
+
+[node name="ExitButton" type="Button" parent="PausePanel/CenterContainer/InnerPanel/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "EXIT TO MENU"
+
+[node name="OptionsPanel" type="VBoxContainer" parent="PausePanel/CenterContainer/InnerPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="OptionsTitleLabel" type="Label" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="OptionsSep" type="HSeparator" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_sep")
+
+[node name="VolumeContainer" type="HBoxContainer" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="VolumeIcon" type="Label" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel/VolumeContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel/VolumeContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_grabber_area")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="VolumeLabel" type="Label" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel/VolumeContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+
+[node name="OptionsSep2" type="HSeparator" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_sep")
+
+[node name="OptionsBackButton" type="Button" parent="PausePanel/CenterContainer/InnerPanel/OptionsPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BACK"

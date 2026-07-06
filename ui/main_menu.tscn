@@ -5,6 +5,38 @@
 [ext_resource type="Texture2D" uid="uid://dj5jeekxb1kb0" path="res://assets/golf.png" id="3_golf"]
 [ext_resource type="Texture2D" uid="uid://cldmjiobksnir" path="res://assets/hole.png" id="4_hole"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_bg"]
+bg_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_content"]
+bg_color = Color(0.08, 0.15, 0.06, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.5, 0.2, 0.6)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_sep"]
+bg_color = Color(0.3, 0.5, 0.2, 0.5)
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_img_placeholder"]
+bg_color = Color(0.12, 0.2, 0.1, 0.4)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.6, 0.3, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -151,11 +183,262 @@ custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "CREDITS"
 
+[node name="HowToPlay" type="Button" parent="ButtonSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "HOW TO PLAY"
+
 [node name="Quit" type="Button" parent="ButtonSection"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "QUIT"
+
+[node name="HowToPlayPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_htp_bg")
+
+[node name="MarginContainer" type="MarginContainer" parent="HowToPlayPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 30
+
+[node name="ContentPanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_htp_content")
+
+[node name="Margin" type="MarginContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 1.0, 0.8, 1)
+theme_override_font_sizes/font_size = 36
+text = "HOW TO PLAY"
+horizontal_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_htp_sep")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InstructionsVBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="ControlsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 22
+text = "CONTROLS"
+
+[node name="ControlsText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "• W A S D  —  Move your character
+• SPACE  —  Attach to the ball (so you can hit it)
+• MOUSE  —  Aim where you want to shoot the ball
+• Hold SPACE to charge your shot, release to fire
+• The longer you hold, the stronger the shot!"
+autowrap_mode = 2
+
+[node name="ControlsImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="ControlsImageLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/ControlsImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.4)
+theme_override_font_sizes/font_size = 14
+text = "[ Add screenshot here ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GoalTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 22
+text = "OBJECTIVE"
+
+[node name="GoalText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "• Sink your ball into the hole before your rival!
+• Both players share the same golf course
+• Walk up to your ball, attach with SPACE, aim with the mouse and shoot
+• The first player to sink the ball wins the round"
+autowrap_mode = 2
+
+[node name="GoalImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="GoalImageLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/GoalImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.4)
+theme_override_font_sizes/font_size = 14
+text = "[ Add screenshot here ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PowerupsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 22
+text = "POWER-UPS"
+
+[node name="PowerupsIntro" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "Coins spawn randomly across the map.
+Hit a coin with your ball to collect it and activate its power!"
+autowrap_mode = 2
+
+[node name="PowerupSpeed" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SpeedImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="SpeedImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed/SpeedImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
+theme_override_font_sizes/font_size = 11
+text = "[ img ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpeedText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "GOLDEN COIN — Speed Boost
+Gives you a speed boost for a few seconds.
+Outrun your rival!"
+autowrap_mode = 2
+
+[node name="PowerupFreeze" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FreezeImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="FreezeImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze/FreezeImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
+theme_override_font_sizes/font_size = 11
+text = "[ img ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FreezeText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5, 0.85, 1.0, 1)
+theme_override_font_sizes/font_size = 15
+text = "LIGHT BLUE COIN — Freeze
+Freezes your rival for a few seconds.
+They can't move or hit!"
+autowrap_mode = 2
+
+[node name="PowerupBounce" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BounceImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="BounceImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce/BounceImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
+theme_override_font_sizes/font_size = 11
+text = "[ img ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BounceText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1.0, 0.5, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "RED COIN — Fast Ball
+Your ball goes faster and bounces more.
+Use the bounces for shortcuts!"
+autowrap_mode = 2
+
+[node name="PowerupHeavy" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HeavyImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
+
+[node name="HeavyImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy/HeavyImagePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
+theme_override_font_sizes/font_size = 11
+text = "[ img ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeavyText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6, 0.4, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "PURPLE COIN — Heavy Ball
+Your rival's ball becomes heavier.
+Their shots will be shorter!"
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "BACK"
 
 [node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1

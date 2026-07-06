@@ -5,8 +5,11 @@ extends Control
 @onready var host: Button = %Host
 @onready var join: Button = %Join
 @onready var credits: Button = %Credits
+@onready var how_to_play: Button = %HowToPlay
 @onready var quit: Button = %Quit
 @onready var golf_ball: TextureRect = %GolfBall
+@onready var how_to_play_panel: PanelContainer = %HowToPlayPanel
+@onready var back_button: Button = %BackButton
 
 var _time: float = 0.0
 var _ball_start_pos: Vector2
@@ -21,6 +24,8 @@ func _ready() -> void:
 	host.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://lobby/host_screen.tscn"))
 	join.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://lobby/join_screen.tscn"))
 	credits.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://ui/credits.tscn"))
+	how_to_play.pressed.connect(_show_how_to_play)
+	back_button.pressed.connect(_hide_how_to_play)
 	
 	host.grab_focus()
 	
@@ -28,7 +33,7 @@ func _ready() -> void:
 	
 	_play_entrance_animations()
 	
-	for button: Button in [host, join, credits, quit]:
+	for button: Button in [host, join, credits, how_to_play, quit, back_button]:
 		button.mouse_entered.connect(func() -> void: _on_button_hover(button))
 		button.mouse_exited.connect(func() -> void: _on_button_unhover(button))
 
@@ -72,3 +77,18 @@ func _on_button_hover(button: Button) -> void:
 func _on_button_unhover(button: Button) -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(button, "scale", Vector2.ONE, 0.1).set_ease(Tween.EASE_OUT)
+
+
+func _show_how_to_play() -> void:
+	how_to_play_panel.visible = true
+	how_to_play_panel.modulate.a = 0.0
+	var tween: Tween = create_tween()
+	tween.tween_property(how_to_play_panel, "modulate:a", 1.0, 0.3).set_ease(Tween.EASE_OUT)
+	back_button.grab_focus()
+
+
+func _hide_how_to_play() -> void:
+	var tween: Tween = create_tween()
+	tween.tween_property(how_to_play_panel, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_IN)
+	tween.tween_callback(func() -> void: how_to_play_panel.visible = false)
+	host.grab_focus()
