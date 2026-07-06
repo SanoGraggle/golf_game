@@ -34,12 +34,17 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if was_charging_shot:
+		was_charging_shot = false
+		if bool(player.get("is_shot_cancelled")):
+			player.set("is_shot_cancelled", false)
+			update_movement_animation()
+			return
+			
 		state_machine.travel("GolfRelease")
 		animation_tree.set("parameters/GolfRelease/GolfBlend/blend_position", golf_blend_direction)
 		animation_tree.set("parameters/GolfRelease/ReleaseSeek/seek_request", GOLF_HOLD_TIME)
 		release_time_left = GOLF_RELEASE_TIME
 		release_playing = true
-		was_charging_shot = false
 		return
 
 	if release_playing:

@@ -81,7 +81,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	if is_multiplayer_authority() and not is_stunned:
-		handle_shot_input()
+		handle_shot_input(delta)
 	
 func setup(data: Statics.PlayerData) -> void:
 	name = str(data.id)
@@ -147,9 +147,16 @@ func send_data(pos: Vector2, vel: Vector2) -> void:
 const SHOT_RANGE := 48.0
 
 var is_charging_shot := false
+var is_shot_cancelled := false
 var _swing_charge_started_msec := -1
+var _shot_cooldown := 0.0
+var _current_charge_time := 0.0
 
-func handle_shot_input() -> void:
+func handle_shot_input(delta: float) -> void:
+	if _shot_cooldown > 0.0:
+		_shot_cooldown -= delta
+		return
+
 	var ball := get_my_ball()
 	var can_hit_ball := false
 	if ball != null and global_position.distance_to(ball.global_position) <= SHOT_RANGE:
@@ -158,6 +165,7 @@ func handle_shot_input() -> void:
 
 	if Input.is_action_just_pressed("shoot"):
 		is_charging_shot = true
+		_current_charge_time = 0.0
 		request_swing_charge_start.rpc()
 		if can_hit_ball:
 			ball.request_charge_start.rpc()
@@ -165,6 +173,19 @@ func handle_shot_input() -> void:
 		# Activar la barra de carga visual
 		if _charge_bar and _charge_bar.has_method("start_charge"):
 			_charge_bar.start_charge()
+
+	if is_charging_shot:
+		_current_charge_time += delta
+		if _current_charge_time >= 3.0:
+			is_shot_cancelled = true
+			is_charging_shot = false
+			_shot_cooldown = 1.0 # 1 second cooldown
+			if _charge_bar and _charge_bar.has_method("stop_charge"):
+				_charge_bar.stop_charge()
+			request_swing_charge_cancel.rpc()
+			if can_hit_ball and ball.has_method("request_charge_cancel"):
+				ball.request_charge_cancel.rpc()
+			return
 
 	if Input.is_action_just_released("shoot") and is_charging_shot:
 		is_charging_shot = false
@@ -193,6 +214,12 @@ func request_swing_charge_start() -> void:
 	if not multiplayer.is_server():
 		return
 	_swing_charge_started_msec = Time.get_ticks_msec()
+
+@rpc("any_peer", "call_local", "reliable")
+func request_swing_charge_cancel() -> void:
+	if not multiplayer.is_server():
+		return
+	_swing_charge_started_msec = -1
 
 @rpc("any_peer", "call_local", "reliable")
 func request_swing_hit(mouse_position: Vector2) -> void:
@@ -230,6 +257,21 @@ func request_swing_hit(mouse_position: Vector2) -> void:
 			if swing_direction.dot(to_other) > 0.0:
 				var knockback_vel = swing_direction * knockback_power
 				other_player.apply_knockback_and_stun.rpc(knockback_vel, stun_duration)
+				
+	for b in get_tree().get_nodes_in_group("balls"):
+		var ball := b as Node2D
+		if ball.name == "Ball_" + str(name):
+			continue # Mi propia bola es golpeada por la lógica normal
+			
+		var distance = global_position.distance_to(ball.global_position)
+		if distance <= SHOT_RANGE:
+			var to_ball = (ball.global_position - global_position).normalized()
+			# Si la bola está dentro de un cono de 180 grados en la dirección del golpe
+			if swing_direction.dot(to_ball) > 0.0:
+				var ball_power = 120.0 + ((700.0 - 120.0) * charge_ratio) # MIN_IMPULSE to MAX_IMPULSE
+				ball_power *= 0.3 # El golpe a otra bola es un 30% del original
+				if ball.has_method("apply_opponent_hit"):
+					ball.apply_opponent_hit.rpc(swing_direction * ball_power)
 
 @rpc("any_peer", "call_local", "reliable")
 func apply_knockback_and_stun(knockback_velocity: Vector2, stun_duration: float) -> void:
@@ -237,6 +279,7 @@ func apply_knockback_and_stun(knockback_velocity: Vector2, stun_duration: float)
 	velocity = knockback_velocity
 	
 	if is_charging_shot:
+		is_shot_cancelled = true
 		is_charging_shot = false
 		if _charge_bar and _charge_bar.has_method("stop_charge"):
 			_charge_bar.stop_charge()
