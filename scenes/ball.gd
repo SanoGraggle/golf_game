@@ -138,6 +138,12 @@ func request_charge_start() -> void:
 
 	charge_started_msec = Time.get_ticks_msec()
 
+@rpc("any_peer", "call_local", "reliable")
+func request_charge_cancel() -> void:
+	if not multiplayer.is_server():
+		return
+	charge_started_msec = -1
+
 
 @rpc("any_peer", "call_local", "reliable")
 func request_hit(mouse_position: Vector2) -> void:
@@ -182,3 +188,13 @@ func request_hit(mouse_position: Vector2) -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	apply_central_impulse(impulse_direction.normalized() * impulse_power)
+
+@rpc("any_peer", "call_local", "reliable")
+func apply_opponent_hit(impulse_vector: Vector2) -> void:
+	if not multiplayer.is_server():
+		return
+		
+	freeze = false
+	sleeping = false
+	slow_time = 0.0
+	apply_central_impulse(impulse_vector)

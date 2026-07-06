@@ -105,4 +105,3 @@ func _draw() -> void:
 			Vector2(bar_pos.x + BAR_WIDTH + 2, indicator_y),
 			glow_color, 2.0
 		)
-
