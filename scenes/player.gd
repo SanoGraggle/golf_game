@@ -26,6 +26,14 @@ var is_frozen := false
 var _freeze_timer: Timer = null
 var _ice_sprite: Sprite2D = null
 
+## Power Shot (moneda roja)
+var _power_shot_label: Label = null
+var _power_shot_panel: PanelContainer = null
+
+## Heavy Ball (moneda morada)
+var _heavy_time_remaining := 0.0
+var _heavy_countdown_label: Label = null
+
 ## Contadores de tiempo restante de power-ups (local, cada peer lo decrementa)
 var _boost_time_remaining := 0.0
 var _freeze_time_remaining := 0.0
@@ -73,6 +81,12 @@ func _process(delta: float) -> void:
 		if _freeze_time_remaining < 0.0:
 			_freeze_time_remaining = 0.0
 		_update_countdown_label(_freeze_countdown_label, _freeze_time_remaining)
+
+	if _heavy_time_remaining > 0.0:
+		_heavy_time_remaining -= delta
+		if _heavy_time_remaining < 0.0:
+			_heavy_time_remaining = 0.0
+		_update_countdown_label(_heavy_countdown_label, _heavy_time_remaining)
 
 func _physics_process(delta: float) -> void:
 	if is_frozen:
@@ -546,3 +560,111 @@ func _remove_countdown_label(label: Label) -> void:
 		if panel != null and is_instance_valid(panel):
 			panel.queue_free()
 	label.queue_free()
+
+## ============================================================
+## Power Shot (moneda roja) — "Super Golpe Activado"
+## ============================================================
+
+func show_power_shot_effect(duration: float) -> void:
+	"""Llamado por el servidor para sincronizar el efecto visual."""
+	_sync_power_shot_visual.rpc(duration)
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_power_shot_visual(duration: float) -> void:
+	# Tinte rojo al jugador
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(1.0, 0.35, 0.15), 0.2)
+
+	# Mostrar label "Super Golpe Activado" (solo para el jugador local)
+	if is_multiplayer_authority():
+		_remove_power_shot_label()
+		_create_power_shot_label()
+
+	# Timer para limpiar el efecto (cada peer lo hace localmente)
+	var cleanup_timer := get_tree().create_timer(duration)
+	cleanup_timer.timeout.connect(_on_power_shot_visual_end)
+
+func _on_power_shot_visual_end() -> void:
+	# Restaurar color original
+	if sprite and not is_frozen and _speed_boost_multiplier <= 1.0:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", player_color, 0.3)
+	# Limpiar label
+	_remove_power_shot_label()
+
+func _create_power_shot_label() -> void:
+	var color := Color(1.0, 0.3, 0.1)
+
+	# Panel de fondo
+	_power_shot_panel = PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(color.r, color.g, color.b, 0.45)
+	style.border_color = Color(color.r, color.g, color.b, 0.8)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(3)
+	style.set_content_margin_all(2)
+	_power_shot_panel.add_theme_stylebox_override("panel", style)
+	_power_shot_panel.position = Vector2(-40, -38)
+	_power_shot_panel.size = Vector2(80, 16)
+	_power_shot_panel.z_index = 9
+	_power_shot_panel.name = "PowerShotPanel"
+	add_child(_power_shot_panel)
+
+	# Label
+	_power_shot_label = Label.new()
+	_power_shot_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_power_shot_label.position = Vector2(-45, -38)
+	_power_shot_label.size = Vector2(90, 20)
+	_power_shot_label.z_index = 10
+	_power_shot_label.text = "⚡ SUPER GOLPE"
+	_power_shot_label.add_theme_font_size_override("font_size", 7)
+	_power_shot_label.add_theme_color_override("font_color", Color.WHITE)
+	_power_shot_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	_power_shot_label.add_theme_constant_override("shadow_offset_x", 1)
+	_power_shot_label.add_theme_constant_override("shadow_offset_y", 1)
+	add_child(_power_shot_label)
+
+func _remove_power_shot_label() -> void:
+	if _power_shot_label != null and is_instance_valid(_power_shot_label):
+		_power_shot_label.queue_free()
+		_power_shot_label = null
+	if _power_shot_panel != null and is_instance_valid(_power_shot_panel):
+		_power_shot_panel.queue_free()
+		_power_shot_panel = null
+
+## ============================================================
+## Heavy Ball (moneda morada) — Pelota Pesada del rival
+## ============================================================
+
+func show_heavy_ball_effect(duration: float) -> void:
+	"""Llamado por el servidor para sincronizar el efecto visual."""
+	_sync_heavy_ball_visual.rpc(duration)
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_heavy_ball_visual(duration: float) -> void:
+	_heavy_time_remaining = duration
+
+	# Tinte morado al jugador afectado
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(0.75, 0.2, 1.0), 0.15)
+
+	# Mostrar countdown label (solo para el jugador local)
+	if is_multiplayer_authority():
+		_remove_countdown_label(_heavy_countdown_label)
+		_heavy_countdown_label = _create_countdown_label(Color(0.75, 0.2, 1.0), Vector2(0, -38))
+
+	# Timer para limpiar el efecto
+	var cleanup_timer := get_tree().create_timer(duration)
+	cleanup_timer.timeout.connect(_on_heavy_ball_visual_end)
+
+func _on_heavy_ball_visual_end() -> void:
+	_heavy_time_remaining = 0.0
+	# Restaurar color original
+	if sprite and not is_frozen and _speed_boost_multiplier <= 1.0:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", player_color, 0.3)
+	# Limpiar label
+	_remove_countdown_label(_heavy_countdown_label)
+	_heavy_countdown_label = null

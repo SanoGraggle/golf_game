@@ -1,33 +1,33 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/freeze_coin.gd" id="1_freeze"]
-[ext_resource type="Texture2D" path="res://assets/COSAS/Money_Ice.png" id="2_money_ice"]
+[ext_resource type="Script" path="res://scenes/power_coin.gd" id="1_power"]
+[ext_resource type="Texture2D" path="res://assets/COSAS/Money_Red.png" id="2_money_red"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f0"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f2"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f3"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f4"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f5"]
-atlas = ExtResource("2_money_ice")
+atlas = ExtResource("2_money_red")
 region = Rect2(80, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_freeze"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_power"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -53,19 +53,19 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_freeze"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_power"]
 radius = 21.0
 
-[node name="FreezeCoin" type="Area2D"]
+[node name="PowerCoin" type="Area2D"]
 scale = Vector2(3, 3)
 collision_layer = 8
 collision_mask = 2
-script = ExtResource("1_freeze")
+script = ExtResource("1_power")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_freeze")
+sprite_frames = SubResource("SpriteFrames_power")
 animation = &"spin"
 autoplay = "spin"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_freeze")
+shape = SubResource("CircleShape2D_power")

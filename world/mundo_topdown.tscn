@@ -24,7 +24,9 @@
 [ext_resource type="Texture2D" uid="uid://h7b1xns18u0e" path="res://assets/COSAS/PropsWater Summer.png" id="14_v7a5t"]
 [ext_resource type="Texture2D" uid="uid://daufgynue3pdf" path="res://assets/Tileset/Tilled Soil and wet soil.png" id="16_v7a5t"]
 [ext_resource type="PackedScene" uid="uid://csl8ywe3i5bc2" path="res://scenes/coin.tscn" id="17_coin"]
-[ext_resource type="PackedScene" uid="uid://bofi6yqqauq80" path="res://scenes/freeze_coin.tscn" id="18_freeze"]
+[ext_resource type="PackedScene" path="res://scenes/freeze_coin.tscn" id="18_freeze"]
+[ext_resource type="PackedScene" path="res://scenes/power_coin.tscn" id="19_power"]
+[ext_resource type="PackedScene" path="res://scenes/heavy_coin.tscn" id="20_heavy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o48fc"]
 texture = ExtResource("2_vmc13")
@@ -5416,7 +5418,7 @@ position = Vector2(324, -757)
 position = Vector2(141, -421)
 
 [node name="Coin2" parent="Coins" unique_id=1809143386 instance=ExtResource("18_freeze")]
-position = Vector2(64, -124)
+position = Vector2(31, -176)
 
 [node name="Coin3" parent="Coins" unique_id=2043130372 instance=ExtResource("17_coin")]
 position = Vector2(316, -586)
@@ -5426,5 +5428,11 @@ position = Vector2(514, -494)
 
 [node name="Coin5" parent="Coins" unique_id=1967964967 instance=ExtResource("17_coin")]
 position = Vector2(320, -188)
+
+[node name="Coin6" parent="Coins" unique_id=352028046 instance=ExtResource("19_power")]
+position = Vector2(451, -99)
+
+[node name="Coin7" parent="Coins" unique_id=670203513 instance=ExtResource("20_heavy")]
+position = Vector2(128.00002, -17)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=46119334]

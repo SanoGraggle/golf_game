@@ -3,6 +3,20 @@ extends RigidBody2D
 @export var ball_color: Color = Color.WHITE
 @onready var sprite: Sprite2D = $Sprite2D
 
+## Power shot (moneda roja) — más fuerza y más rebote en el próximo tiro
+var _power_shot_force_mult := 1.0
+var _power_shot_bounce_mult := 1.0
+var _power_shot_active := false
+var _power_shot_timer: Timer = null
+var _default_bounce: float = 0.5  ## Se guarda el bounce original del PhysicsMaterial
+
+## Heavy ball (moneda morada) — pelota pesada del rival
+var _heavy_active := false
+var _heavy_timer: Timer = null
+var _heavy_default_damp: float = -1.0  ## Se guarda el linear_damp antes de heavy
+var _heavy_damp_mult := 1.0
+var _heavy_bounce_value: float = 0.5
+
 
 ####### unique id para cada bola########
 @export var owner_peer_id := 0
@@ -38,6 +52,9 @@ func _ready() -> void:
 	last_position = position
 	# Guardamos el linear_damp original para restaurarlo cuando salga de la arena
 	_default_linear_damp = linear_damp
+	# Guardamos el bounce original del PhysicsMaterial
+	if physics_material_override:
+		_default_bounce = physics_material_override.bounce
 	
 	if not multiplayer.is_server():
 		freeze_mode = RigidBody2D.FREEZE_MODE_KINEMATIC
@@ -58,10 +75,12 @@ func _physics_process(delta: float) -> void:
 		if root:
 			_agua_layer = root.find_child("AGUA", true, false) as TileMapLayer
 
-	# Ajustar linear_damp según el terreno (arena = más fricción)
+	# Ajustar linear_damp según el terreno y si el efecto pesado está activo
 	if _agua_layer != null:
 		var tile_coords := _agua_layer.local_to_map(_agua_layer.to_local(global_position))
-		if _agua_layer.get_cell_source_id(tile_coords) >= 0:
+		if _heavy_active:
+			linear_damp = _heavy_default_damp * _heavy_damp_mult
+		elif _agua_layer.get_cell_source_id(tile_coords) >= 0:
 			# La bola está sobre arena, aumentar el damping
 			linear_damp = SAND_DAMP
 		else:
@@ -178,6 +197,15 @@ func request_hit(mouse_position: Vector2) -> void:
 	var charge_ratio: float = charge_seconds / MAX_CHARGE_TIME
 	var impulse_power: float = MIN_IMPULSE + ((MAX_IMPULSE - MIN_IMPULSE) * charge_ratio)
 	
+	# Aplicar multiplicador de super golpe (moneda roja)
+	if _power_shot_active:
+		impulse_power *= _power_shot_force_mult
+		# Aumentar el rebote temporalmente para este tiro
+		if physics_material_override:
+			physics_material_override.bounce = _default_bounce * _power_shot_bounce_mult
+		# Consumir el super golpe después de usarlo
+		_end_power_shot()
+	
 	var owner_player := get_owner_player()
 	if owner_player != null and owner_player.has_method("play_shot_sound"):
 		owner_player.play_shot_sound.rpc(charge_ratio)
@@ -198,3 +226,122 @@ func apply_opponent_hit(impulse_vector: Vector2) -> void:
 	sleeping = false
 	slow_time = 0.0
 	apply_central_impulse(impulse_vector)
+
+## ============================================================
+## Power Shot (moneda roja) — Super Golpe
+## ============================================================
+
+func apply_power_shot(force_mult: float, bounce_mult: float, duration: float) -> void:
+	"""Llamado solo en el servidor desde power_coin.gd"""
+	if _power_shot_timer != null:
+		_power_shot_timer.stop()
+		_power_shot_timer.queue_free()
+
+	_power_shot_active = true
+	_power_shot_force_mult = force_mult
+	_power_shot_bounce_mult = bounce_mult
+
+	_power_shot_timer = Timer.new()
+	_power_shot_timer.wait_time = duration
+	_power_shot_timer.one_shot = true
+	_power_shot_timer.timeout.connect(_on_power_shot_timeout)
+	add_child(_power_shot_timer)
+	_power_shot_timer.start()
+
+	# Sincronizar efecto visual a todos los peers
+	_sync_power_shot_start.rpc()
+
+func _on_power_shot_timeout() -> void:
+	_end_power_shot()
+
+func _end_power_shot() -> void:
+	_power_shot_active = false
+	_power_shot_force_mult = 1.0
+	_power_shot_bounce_mult = 1.0
+	# Restaurar bounce original
+	if physics_material_override:
+		physics_material_override.bounce = _default_bounce
+	if _power_shot_timer != null:
+		_power_shot_timer.stop()
+		_power_shot_timer.queue_free()
+		_power_shot_timer = null
+	# Sincronizar fin del efecto visual
+	_sync_power_shot_end.rpc()
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_power_shot_start() -> void:
+	# Efecto visual: brillo rojo en la pelota
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(1.0, 0.3, 0.15), 0.2)
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_power_shot_end() -> void:
+	# Restaurar color original de la pelota
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", ball_color, 0.3)
+
+## ============================================================
+## Heavy Ball (moneda morada) — Pelota Pesada
+## ============================================================
+
+func apply_heavy(damp_mult: float, bounce_value: float, duration: float) -> void:
+	"""Llamado solo en el servidor desde heavy_coin.gd"""
+	if _heavy_timer != null:
+		_heavy_timer.stop()
+		_heavy_timer.queue_free()
+
+	_heavy_active = true
+	_heavy_damp_mult = damp_mult
+	_heavy_bounce_value = bounce_value
+	if _heavy_default_damp < 0:
+		_heavy_default_damp = _default_linear_damp
+
+	# Aumentar damping (pelota se frena más rápido)
+	linear_damp = _heavy_default_damp * _heavy_damp_mult
+	# Reducir rebote
+	if physics_material_override:
+		physics_material_override.bounce = _heavy_bounce_value
+
+	_heavy_timer = Timer.new()
+	_heavy_timer.wait_time = duration
+	_heavy_timer.one_shot = true
+	_heavy_timer.timeout.connect(_on_heavy_timeout)
+	add_child(_heavy_timer)
+	_heavy_timer.start()
+
+	# Sincronizar efecto visual
+	_sync_heavy_start.rpc()
+
+func _on_heavy_timeout() -> void:
+	_end_heavy()
+
+func _end_heavy() -> void:
+	_heavy_active = false
+	_heavy_damp_mult = 1.0
+	_heavy_bounce_value = _default_bounce
+	# Restaurar damping y bounce originales
+	linear_damp = _default_linear_damp
+	if physics_material_override:
+		physics_material_override.bounce = _default_bounce
+	if _heavy_timer != null:
+		_heavy_timer.stop()
+		_heavy_timer.queue_free()
+		_heavy_timer = null
+	# Sincronizar fin del efecto visual
+	_sync_heavy_end.rpc()
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_heavy_start() -> void:
+	# Efecto visual: tinte morado en la pelota
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", Color(0.75, 0.2, 1.0), 0.2)
+
+@rpc("any_peer", "call_local", "reliable")
+func _sync_heavy_end() -> void:
+	# Restaurar color original de la pelota
+	if sprite:
+		var tween: Tween = create_tween()
+		tween.tween_property(sprite, "self_modulate", ball_color, 0.3)
