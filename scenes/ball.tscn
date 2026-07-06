@@ -41,3 +41,5 @@ texture = ExtResource("1_7s4qf")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=314627011]
 replication_config = SubResource("SceneReplicationConfig_cxlvu")
+
+

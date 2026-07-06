@@ -1,5 +1,11 @@
 extends Node2D
 
+
+####musica
+@onready var music_player: AudioStreamPlayer2D = $Music
+@onready var bg_music_stream: AudioStream = load("res://assets/Sounds/Background_Music.mp3")
+###
+
 @export var player_scene: PackedScene
 @onready var players: Node2D = $Players
 @onready var spawn_points: Node2D = $SpawnPoints
@@ -33,6 +39,12 @@ func _ready() -> void:
 	# 2. Instanciar Pelota (Solo en Servidor, pero con un pequeño retraso)
 	if multiplayer.is_server():
 		spawn_balls_delayed()
+		
+	# musica play
+	if music_player != null and bg_music_stream != null:
+		music_player.stream = bg_music_stream
+		music_player.play()
+
 
 # NUEVA FUNCIÓN: Espera a que los clientes estén listos
 func spawn_balls_delayed() -> void:

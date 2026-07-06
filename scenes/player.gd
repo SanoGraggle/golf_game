@@ -1,8 +1,21 @@
 # player.gd
 extends CharacterBody2D
 
+#### Sounds 
+@onready var sfx_player: AudioStreamPlayer2D = $SFX_Player
+@onready var shot_sfx: AudioStreamPlayer2D = $ShotSFX
+
+@onready var weak_shot_stream: AudioStream = load("res://assets/Sounds/Weak_Golf_Shot.wav")
+@onready var medium_shot_stream: AudioStream = load("res://assets/Sounds/Medium_Golf_Shot.wav")
+@onready var strong_shot_stream: AudioStream = load("res://assets/Sounds/Strong_Golf_Shot.wav")
+
+@onready var speed_power_up_stream: AudioStream = load("res://assets/Sounds/Speed_Power_up.ogg")
+@onready var freeze_power_up_stream: AudioStream = load("res://assets/Sounds/Freeze_Power_up.wav")
+
+
 const BASE_SPEED := 150.0
 var current_speed := BASE_SPEED
+var is_stunned: bool = false
 
 ## Speed boost (monedas)
 var _speed_boost_multiplier := 1.0
@@ -39,6 +52,9 @@ var _indicator_instance: CanvasLayer = null
 var charge_bar_script: GDScript = preload("res://scenes/charge_bar.gd")
 var _charge_bar: Node2D = null
 
+func _ready() -> void:
+	add_to_group("players") # Vital para poder buscar a los rivales
+	
 func _process(delta: float) -> void:
 	# Sincronizamos el color visualmente en todos los clientes
 	# No sobreescribir si hay un efecto visual activo (freeze o boost)
@@ -58,23 +74,26 @@ func _process(delta: float) -> void:
 			_freeze_time_remaining = 0.0
 		_update_countdown_label(_freeze_countdown_label, _freeze_time_remaining)
 
-func _physics_process(_delta: float) -> void:
-	# Si está congelado, no se puede mover
+func _physics_process(delta: float) -> void:
 	if is_frozen:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
 
-	var move_input: Vector2 = input_synchronizer.move_input
+	if is_stunned:
+		var friction = 1200.0 
+		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		
+	else:
+		var move_input: Vector2 = input_synchronizer.move_input
 
-	velocity.x = move_input.x * current_speed if move_input.x else move_toward(velocity.x, 0, current_speed)
-	velocity.y = move_input.y * current_speed if move_input.y else move_toward(velocity.y, 0, current_speed)
+		velocity.x = move_input.x * current_speed if move_input.x else move_toward(velocity.x, 0, current_speed)
+		velocity.y = move_input.y * current_speed if move_input.y else move_toward(velocity.y, 0, current_speed)
 
 	move_and_slide()
 
-	if is_multiplayer_authority():
-		handle_shot_input()
-
+	if is_multiplayer_authority() and not is_stunned:
+		handle_shot_input(delta)
 	
 func setup(data: Statics.PlayerData) -> void:
 	name = str(data.id)
@@ -140,18 +159,45 @@ func send_data(pos: Vector2, vel: Vector2) -> void:
 const SHOT_RANGE := 48.0
 
 var is_charging_shot := false
+var is_shot_cancelled := false
+var _swing_charge_started_msec := -1
+var _shot_cooldown := 0.0
+var _current_charge_time := 0.0
 
+func handle_shot_input(delta: float) -> void:
+	if _shot_cooldown > 0.0:
+		_shot_cooldown -= delta
+		return
 
-func handle_shot_input() -> void:
 	var ball := get_my_ball()
+	var can_hit_ball := false
+	if ball != null and global_position.distance_to(ball.global_position) <= SHOT_RANGE:
+		if ball.has_method("is_stopped") and ball.is_stopped():
+			can_hit_ball = true
 
 	if Input.is_action_just_pressed("shoot"):
-		if can_begin_shot(ball):
-			is_charging_shot = true
+		is_charging_shot = true
+		_current_charge_time = 0.0
+		request_swing_charge_start.rpc()
+		if can_hit_ball:
 			ball.request_charge_start.rpc()
-			# Activar la barra de carga visual
-			if _charge_bar and _charge_bar.has_method("start_charge"):
-				_charge_bar.start_charge()
+		
+		# Activar la barra de carga visual
+		if _charge_bar and _charge_bar.has_method("start_charge"):
+			_charge_bar.start_charge()
+
+	if is_charging_shot:
+		_current_charge_time += delta
+		if _current_charge_time >= 3.0:
+			is_shot_cancelled = true
+			is_charging_shot = false
+			_shot_cooldown = 1.0 # 1 second cooldown
+			if _charge_bar and _charge_bar.has_method("stop_charge"):
+				_charge_bar.stop_charge()
+			request_swing_charge_cancel.rpc()
+			if can_hit_ball and ball.has_method("request_charge_cancel"):
+				ball.request_charge_cancel.rpc()
+			return
 
 	if Input.is_action_just_released("shoot") and is_charging_shot:
 		is_charging_shot = false
@@ -159,34 +205,100 @@ func handle_shot_input() -> void:
 		if _charge_bar and _charge_bar.has_method("stop_charge"):
 			_charge_bar.stop_charge()
 
-		if ball == null:
-			return
-
 		var mouse_position: Vector2 = get_global_mouse_position()
-		ball.request_hit.rpc(mouse_position)
+		request_swing_hit.rpc(mouse_position)
+		
+		if can_hit_ball:
+			ball.request_hit.rpc(mouse_position)
 
 
 func get_my_ball() -> Node2D:
 	var target_ball_name := "Ball_" + str(multiplayer.get_unique_id())
 
-	for ball in get_tree().get_nodes_in_group("balls"):
-		if ball.name == target_ball_name:
-			return ball as Node2D
+	for b in get_tree().get_nodes_in_group("balls"):
+		if b.name == target_ball_name:
+			return b as Node2D
 
 	return null
 
+@rpc("any_peer", "call_local", "reliable")
+func request_swing_charge_start() -> void:
+	if not multiplayer.is_server():
+		return
+	_swing_charge_started_msec = Time.get_ticks_msec()
 
-func can_begin_shot(ball: Node2D) -> bool:
-	if ball == null:
-		return false
+@rpc("any_peer", "call_local", "reliable")
+func request_swing_charge_cancel() -> void:
+	if not multiplayer.is_server():
+		return
+	_swing_charge_started_msec = -1
 
-	if global_position.distance_to(ball.global_position) > SHOT_RANGE:
-		return false
+@rpc("any_peer", "call_local", "reliable")
+func request_swing_hit(mouse_position: Vector2) -> void:
+	if not multiplayer.is_server():
+		return
+		
+	if _swing_charge_started_msec < 0:
+		return
+		
+	var charge_seconds: float = float(Time.get_ticks_msec() - _swing_charge_started_msec) / 1000.0
+	_swing_charge_started_msec = -1
+	
+	if charge_seconds < 0.0:
+		charge_seconds = 0.0
+	elif charge_seconds > 1.25: # MAX_CHARGE_TIME from ball.gd
+		charge_seconds = 1.25
+		
+	var charge_ratio: float = charge_seconds / 1.25
+	
+	var stun_duration = 0.5 + (1.5 * charge_ratio) # 0.5s to 2.0s
+	var knockback_power = 200.0 + (600.0 * charge_ratio)
+	
+	var swing_direction = (mouse_position - global_position).normalized()
+	if swing_direction.length() == 0:
+		return
+		
+	for other_player in get_tree().get_nodes_in_group("players"):
+		if other_player == self:
+			continue
+			
+		var distance = global_position.distance_to(other_player.global_position)
+		if distance <= SHOT_RANGE:
+			var to_other = (other_player.global_position - global_position).normalized()
+			# Si el jugador está dentro de un cono de 180 grados en la dirección del golpe
+			if swing_direction.dot(to_other) > 0.0:
+				var knockback_vel = swing_direction * knockback_power
+				other_player.apply_knockback_and_stun.rpc(knockback_vel, stun_duration)
+				
+	for b in get_tree().get_nodes_in_group("balls"):
+		var ball := b as Node2D
+		if ball.name == "Ball_" + str(name):
+			continue # Mi propia bola es golpeada por la lógica normal
+			
+		var distance = global_position.distance_to(ball.global_position)
+		if distance <= SHOT_RANGE:
+			var to_ball = (ball.global_position - global_position).normalized()
+			# Si la bola está dentro de un cono de 180 grados en la dirección del golpe
+			if swing_direction.dot(to_ball) > 0.0:
+				var ball_power = 120.0 + ((700.0 - 120.0) * charge_ratio) # MIN_IMPULSE to MAX_IMPULSE
+				ball_power *= 0.3 # El golpe a otra bola es un 30% del original
+				if ball.has_method("apply_opponent_hit"):
+					ball.apply_opponent_hit.rpc(swing_direction * ball_power)
 
-	if ball.has_method("is_stopped") and not ball.is_stopped():
-		return false
-
-	return true
+@rpc("any_peer", "call_local", "reliable")
+func apply_knockback_and_stun(knockback_velocity: Vector2, stun_duration: float) -> void:
+	is_stunned = true
+	velocity = knockback_velocity
+	
+	if is_charging_shot:
+		is_shot_cancelled = true
+		is_charging_shot = false
+		if _charge_bar and _charge_bar.has_method("stop_charge"):
+			_charge_bar.stop_charge()
+			
+	# Restaurar el estado de aturdimiento después del tiempo correspondiente
+	var timer = get_tree().create_timer(stun_duration)
+	timer.timeout.connect(func(): is_stunned = false)
 
 
 ## Aplica un boost de velocidad temporal (monedas)
@@ -218,6 +330,9 @@ func _on_boost_timeout() -> void:
 func _sync_boost_start(multiplier: float, duration: float) -> void:
 	_speed_boost_multiplier = multiplier
 	current_speed = BASE_SPEED * _speed_boost_multiplier
+	if sfx_player != null and speed_power_up_stream != null:
+		sfx_player.stream = speed_power_up_stream
+		sfx_player.play()
 	_boost_time_remaining = duration
 	# Efecto visual: tinte dorado
 	if sprite:
@@ -272,6 +387,9 @@ func _on_freeze_timeout() -> void:
 @rpc("any_peer", "call_local", "reliable")
 func _sync_freeze_start(duration: float) -> void:
 	is_frozen = true
+	if sfx_player != null and freeze_power_up_stream != null:
+		sfx_player.stream = freeze_power_up_stream
+		sfx_player.play()
 	velocity = Vector2.ZERO
 	_freeze_time_remaining = duration
 	# Crear label de countdown (solo en este jugador)
@@ -356,6 +474,19 @@ func _sync_freeze_end() -> void:
 		disappear_tween.tween_property(_ice_sprite, "modulate:a", 0.0, 0.3)
 		disappear_tween.set_parallel(false)
 		disappear_tween.tween_callback(_remove_ice_sprite)
+
+@rpc("authority", "call_local", "reliable")
+func play_shot_sound(charge_ratio: float) -> void:
+	if shot_sfx == null:
+		return
+	if charge_ratio < 0.33:
+		shot_sfx.stream = weak_shot_stream
+	elif charge_ratio < 0.66:
+		shot_sfx.stream = medium_shot_stream
+	else:
+		shot_sfx.stream = strong_shot_stream
+	if shot_sfx.stream != null:
+		shot_sfx.play()
 
 func _remove_ice_sprite() -> void:
 	if _ice_sprite != null:
