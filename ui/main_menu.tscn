@@ -4,10 +4,11 @@
 [ext_resource type="Script" uid="uid://cnbk17iq1x68f" path="res://ui/main_menu.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://dj5jeekxb1kb0" path="res://assets/golf.png" id="3_golf"]
 [ext_resource type="Texture2D" uid="uid://cldmjiobksnir" path="res://assets/hole.png" id="4_hole"]
-[ext_resource type="Texture2D" uid="uid://new_money_gold" path="res://assets/COSAS/Money.png" id="5_money_gold"]
-[ext_resource type="Texture2D" uid="uid://new_money_ice" path="res://assets/COSAS/Money_Ice.png" id="6_money_ice"]
-[ext_resource type="Texture2D" uid="uid://new_money_red" path="res://assets/COSAS/Money_Red.png" id="7_money_red"]
-[ext_resource type="Texture2D" uid="uid://new_money_purple" path="res://assets/COSAS/Money_Purple.png" id="8_money_purple"]
+[ext_resource type="Texture2D" uid="uid://bxd63ipc1xq68" path="res://assets/COSAS/Money.png" id="5_money_gold"]
+[ext_resource type="Texture2D" uid="uid://d1jxn5mkbo6gq" path="res://assets/COSAS/Money_Ice.png" id="6_money_ice"]
+[ext_resource type="Texture2D" uid="uid://ciyygs2grqav8" path="res://assets/COSAS/Money_Red.png" id="7_money_red"]
+[ext_resource type="Texture2D" uid="uid://b36srebhctdeq" path="res://assets/COSAS/Money_Purple.png" id="8_money_purple"]
+[ext_resource type="Texture2D" uid="uid://82njduddbjkj" path="res://assets/COSAS/game.png" id="9_game"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_bg"]
 bg_color = Color(0, 0, 0, 0.8)
@@ -25,9 +26,9 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_sep"]
-bg_color = Color(0.3, 0.5, 0.2, 0.5)
 content_margin_top = 1.0
 content_margin_bottom = 1.0
+bg_color = Color(0.3, 0.5, 0.2, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_img_placeholder"]
 bg_color = Color(0.12, 0.2, 0.1, 0.4)
@@ -41,7 +42,23 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="MainMenu" type="Control"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gold"]
+atlas = ExtResource("5_money_gold")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ice"]
+atlas = ExtResource("6_money_ice")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_red"]
+atlas = ExtResource("7_money_red")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_purple"]
+atlas = ExtResource("8_money_purple")
+region = Rect2(0, 0, 16, 16)
+
+[node name="MainMenu" type="Control" unique_id=175012158]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,7 +68,7 @@ grow_vertical = 2
 theme = ExtResource("1_theme")
 script = ExtResource("2_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1448841266]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,7 +77,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.1, 0.2, 0.08, 1)
 
-[node name="GrassStripe" type="ColorRect" parent="."]
+[node name="GrassStripe" type="ColorRect" parent="." unique_id=152344112]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.82
@@ -70,7 +87,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.14, 0.28, 0.1, 1)
 
-[node name="GrassLine" type="ColorRect" parent="."]
+[node name="GrassLine" type="ColorRect" parent="." unique_id=178774636]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.81
@@ -79,7 +96,7 @@ anchor_bottom = 0.83
 grow_horizontal = 2
 color = Color(0.18, 0.36, 0.12, 1)
 
-[node name="TopBar" type="ColorRect" parent="."]
+[node name="TopBar" type="ColorRect" parent="." unique_id=1429501979]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -87,7 +104,7 @@ anchor_bottom = 0.02
 grow_horizontal = 2
 color = Color(0.36, 0.22, 0.09, 1)
 
-[node name="BottomBar" type="ColorRect" parent="."]
+[node name="BottomBar" type="ColorRect" parent="." unique_id=1214833980]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.98
@@ -96,7 +113,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 color = Color(0.36, 0.22, 0.09, 1)
 
-[node name="TitleSection" type="VBoxContainer" parent="."]
+[node name="TitleSection" type="VBoxContainer" parent="." unique_id=1300472703]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -110,27 +127,27 @@ grow_horizontal = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="TitleSection"]
+[node name="TitleLabel" type="Label" parent="TitleSection" unique_id=418149859]
 layout_mode = 2
 theme_type_variation = &"Title"
 theme_override_font_sizes/font_size = 64
 text = "GOLF GAME"
 horizontal_alignment = 1
 
-[node name="SubtitleLabel" type="Label" parent="TitleSection"]
+[node name="SubtitleLabel" type="Label" parent="TitleSection" unique_id=1432017641]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.8, 0.5, 0.7)
 theme_override_font_sizes/font_size = 14
 text = "~ Multiplayer Edition ~"
 horizontal_alignment = 1
 
-[node name="DecoContainer" type="HBoxContainer" parent="TitleSection"]
+[node name="DecoContainer" type="HBoxContainer" parent="TitleSection" unique_id=1072829056]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="Flag1" type="TextureRect" parent="TitleSection/DecoContainer"]
+[node name="Flag1" type="TextureRect" parent="TitleSection/DecoContainer" unique_id=878082333]
 custom_minimum_size = Vector2(48, 64)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -138,7 +155,7 @@ texture = ExtResource("4_hole")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GolfBall" type="TextureRect" parent="TitleSection/DecoContainer"]
+[node name="GolfBall" type="TextureRect" parent="TitleSection/DecoContainer" unique_id=985276368]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
@@ -148,7 +165,7 @@ texture = ExtResource("3_golf")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Flag2" type="TextureRect" parent="TitleSection/DecoContainer"]
+[node name="Flag2" type="TextureRect" parent="TitleSection/DecoContainer" unique_id=183669452]
 custom_minimum_size = Vector2(48, 64)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -156,7 +173,7 @@ texture = ExtResource("4_hole")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ButtonSection" type="VBoxContainer" parent="."]
+[node name="ButtonSection" type="VBoxContainer" parent="." unique_id=605387212]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -169,37 +186,37 @@ offset_bottom = 240.0
 grow_horizontal = 2
 theme_override_constants/separation = 10
 
-[node name="Host" type="Button" parent="ButtonSection"]
+[node name="Host" type="Button" parent="ButtonSection" unique_id=782122656]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "HOST GAME"
 
-[node name="Join" type="Button" parent="ButtonSection"]
+[node name="Join" type="Button" parent="ButtonSection" unique_id=1908235784]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "JOIN GAME"
 
-[node name="Credits" type="Button" parent="ButtonSection"]
+[node name="Credits" type="Button" parent="ButtonSection" unique_id=1894673134]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "CREDITS"
 
-[node name="HowToPlay" type="Button" parent="ButtonSection"]
+[node name="HowToPlay" type="Button" parent="ButtonSection" unique_id=216736500]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "HOW TO PLAY"
 
-[node name="Quit" type="Button" parent="ButtonSection"]
+[node name="Quit" type="Button" parent="ButtonSection" unique_id=1520484899]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "QUIT"
 
-[node name="HowToPlayPanel" type="PanelContainer" parent="."]
+[node name="HowToPlayPanel" type="PanelContainer" parent="." unique_id=984354184]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -210,55 +227,55 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_htp_bg")
 
-[node name="MarginContainer" type="MarginContainer" parent="HowToPlayPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="HowToPlayPanel" unique_id=739779206]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 30
 
-[node name="ContentPanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer"]
+[node name="ContentPanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer" unique_id=1704055576]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_htp_content")
 
-[node name="Margin" type="MarginContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel"]
+[node name="Margin" type="MarginContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel" unique_id=1370889790]
 layout_mode = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 24
 
-[node name="VBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin"]
+[node name="VBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin" unique_id=1570725891]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+[node name="TitleLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox" unique_id=681771342]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 1.0, 0.8, 1)
+theme_override_colors/font_color = Color(0.9, 1, 0.8, 1)
 theme_override_font_sizes/font_size = 36
 text = "HOW TO PLAY"
 horizontal_alignment = 1
 
-[node name="Separator" type="HSeparator" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+[node name="Separator" type="HSeparator" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox" unique_id=1631120706]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxFlat_htp_sep")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox" unique_id=1082590157]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InstructionsVBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer"]
+[node name="InstructionsVBox" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer" unique_id=1499766142]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="ControlsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="ControlsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=1912650473]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
 theme_override_font_sizes/font_size = 22
 text = "CONTROLS"
 
-[node name="ControlsText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="ControlsText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=902775854]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 15
@@ -269,25 +286,25 @@ text = "• W A S D  —  Move your character
 • The longer you hold, the stronger the shot!"
 autowrap_mode = 2
 
-[node name="ControlsImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="ControlsImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=1007629085]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="ControlsImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/ControlsImagePanel"]
+[node name="ControlsImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/ControlsImagePanel" unique_id=430175196]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-texture = ExtResource("3_golf")
+texture = ExtResource("9_game")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GoalTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="GoalTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=1005112184]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
 theme_override_font_sizes/font_size = 22
 text = "OBJECTIVE"
 
-[node name="GoalText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="GoalText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=763603497]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 15
@@ -297,25 +314,25 @@ text = "• Sink your ball into the hole before your rival!
 • The first player to sink the ball wins the round"
 autowrap_mode = 2
 
-[node name="GoalImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="GoalImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=1904165034]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="GoalImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/GoalImagePanel"]
+[node name="GoalImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/GoalImagePanel" unique_id=816381183]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 texture = ExtResource("4_hole")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PowerupsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=1533014383]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.95, 0.5, 1)
 theme_override_font_sizes/font_size = 22
 text = "POWER-UPS"
 
-[node name="PowerupsIntro" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupsIntro" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=4180462]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 15
@@ -323,117 +340,109 @@ text = "Coins spawn randomly across the map.
 Hit a coin with your ball to collect it and activate its power!"
 autowrap_mode = 2
 
-[node name="PowerupSpeed" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupSpeed" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=2106154331]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SpeedImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed"]
+[node name="SpeedImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed" unique_id=1839280529]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="SpeedImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed/SpeedImagePanel"]
+[node name="SpeedImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed/SpeedImagePanel" unique_id=1377255353]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("5_money_gold")
+texture = SubResource("AtlasTexture_gold")
 expand_mode = 1
 stretch_mode = 5
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
 
-[node name="SpeedText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed"]
+[node name="SpeedText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed" unique_id=457077856]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 15
 text = "GOLDEN COIN — Speed Boost
 Gives you a speed boost for a few seconds.
 Outrun your rival!"
 autowrap_mode = 2
 
-[node name="PowerupFreeze" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupFreeze" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=874701901]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="FreezeImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze"]
+[node name="FreezeImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze" unique_id=1348524572]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="FreezeImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze/FreezeImagePanel"]
+[node name="FreezeImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze/FreezeImagePanel" unique_id=1529812511]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("6_money_ice")
+texture = SubResource("AtlasTexture_ice")
 expand_mode = 1
 stretch_mode = 5
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
 
-[node name="FreezeText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze"]
+[node name="FreezeText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze" unique_id=1648698180]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.5, 0.85, 1.0, 1)
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
 theme_override_font_sizes/font_size = 15
 text = "LIGHT BLUE COIN — Freeze
 Freezes your rival for a few seconds.
 They can't move or hit!"
 autowrap_mode = 2
 
-[node name="PowerupBounce" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupBounce" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=109393324]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="BounceImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce"]
+[node name="BounceImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce" unique_id=764105135]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="BounceImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce/BounceImagePanel"]
+[node name="BounceImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce/BounceImagePanel" unique_id=236445601]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("7_money_red")
+texture = SubResource("AtlasTexture_red")
 expand_mode = 1
 stretch_mode = 5
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
 
-[node name="BounceText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce"]
+[node name="BounceText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce" unique_id=680590457]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1.0, 0.5, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.5, 0.3, 1)
 theme_override_font_sizes/font_size = 15
 text = "RED COIN — Fast Ball
 Your ball goes faster and bounces more.
 Use the bounces for shortcuts!"
 autowrap_mode = 2
 
-[node name="PowerupHeavy" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
+[node name="PowerupHeavy" type="HBoxContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox" unique_id=393104769]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="HeavyImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy"]
+[node name="HeavyImagePanel" type="PanelContainer" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy" unique_id=1669880692]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="HeavyImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy/HeavyImagePanel"]
+[node name="HeavyImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy/HeavyImagePanel" unique_id=1707032329]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("8_money_purple")
+texture = SubResource("AtlasTexture_purple")
 expand_mode = 1
 stretch_mode = 5
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
 
-[node name="HeavyText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy"]
+[node name="HeavyText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy" unique_id=2059499057]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.6, 0.4, 0.8, 1)
@@ -443,14 +452,14 @@ Your rival's ball becomes heavier.
 Their shots will be shorter!"
 autowrap_mode = 2
 
-[node name="BackButton" type="Button" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox"]
+[node name="BackButton" type="Button" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox" unique_id=1374133603]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "BACK"
 
-[node name="VersionLabel" type="Label" parent="."]
+[node name="VersionLabel" type="Label" parent="." unique_id=559493143]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0

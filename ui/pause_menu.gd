@@ -77,14 +77,6 @@ func _exit_to_menu() -> void:
 	_is_paused = false
 	pause_panel.visible = false
 	
-	# Limpiar conexión multiplayer
-	if multiplayer.multiplayer_peer and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
-		multiplayer.multiplayer_peer.close()
-		multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-	
-	# Limpiar datos de jugadores
-	Game.players = []
-	
 	# Eliminar cualquier CanvasLayer de win_screen que pueda estar flotando
 	for child: Node in get_tree().root.get_children():
 		if child is CanvasLayer and child != self and child.name != "Game" and child.name != "Lobby" and child.name != "PauseMenu":
@@ -93,7 +85,7 @@ func _exit_to_menu() -> void:
 					child.queue_free()
 					break
 	
-	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	Lobby.go_to_menu()
 
 
 func _on_volume_changed(value: float) -> void:

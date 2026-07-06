@@ -87,7 +87,6 @@ func go_to_lobby() -> void:
 
 func go_to_menu() -> void:
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
-	multiplayer.multiplayer_peer.close()
 	reset()
 
 
@@ -117,7 +116,9 @@ func send_data(data: Dictionary) -> void:
 
 
 func reset() -> void:
-	multiplayer.multiplayer_peer.close()
+	if multiplayer.multiplayer_peer and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
+		if multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.CONNECTION_DISCONNECTED:
+			multiplayer.multiplayer_peer.close()
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	Game.players = []
 	Debug.reset_window_title()

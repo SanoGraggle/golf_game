@@ -33,22 +33,13 @@ func setup(is_winner: bool, winner_id: int) -> void:
 
 
 func _on_main_menu_pressed() -> void:
-	# 1. QUITAR LA PAUSA: Fundamental para que el menú principal 
-	# y la siguiente partida no se queden congelados.
+	# 1. QUITAR LA PAUSA
 	get_tree().paused = false
 	
-	# 2. ARQUITECTURA MULTIJUGADOR: Apagar el peer de red local
-	if multiplayer.multiplayer_peer and not multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
-		multiplayer.multiplayer_peer.close()
-		multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-	
-	# 3. Limpiar datos de jugadores
-	Game.players = []
-	
-	# 4. Eliminar el CanvasLayer padre donde estamos montados
+	# 2. Eliminar el CanvasLayer padre donde estamos montados
 	var canvas_parent: Node = get_parent()
 	if canvas_parent is CanvasLayer:
 		canvas_parent.queue_free()
 		
-	# 5. Cambiar de escena
-	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	# 3. Limpiar estado y cambiar de escena usando Lobby
+	Lobby.go_to_menu()
