@@ -495,4 +495,8 @@ zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
+[node name="SFX_Player" type="AudioStreamPlayer2D" parent="." unique_id=1981490346]
+
+[node name="ShotSFX" type="AudioStreamPlayer2D" parent="." unique_id=1981490347]
+
 [connection signal="timeout" from="SyncTimer" to="." method="_on_sync_timer_timeout"]

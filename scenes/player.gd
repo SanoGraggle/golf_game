@@ -1,6 +1,18 @@
 # player.gd
 extends CharacterBody2D
 
+#### Sounds 
+@onready var sfx_player: AudioStreamPlayer2D = $SFX_Player
+@onready var shot_sfx: AudioStreamPlayer2D = $ShotSFX
+
+@onready var weak_shot_stream: AudioStream = load("res://assets/Sounds/Weak_Golf_Shot.wav")
+@onready var medium_shot_stream: AudioStream = load("res://assets/Sounds/Medium_Golf_Shot.wav")
+@onready var strong_shot_stream: AudioStream = load("res://assets/Sounds/Strong_Golf_Shot.wav")
+
+@onready var speed_power_up_stream: AudioStream = load("res://assets/Sounds/Speed_Power_up.ogg")
+@onready var freeze_power_up_stream: AudioStream = load("res://assets/Sounds/Freeze_Power_up.wav")
+
+
 const BASE_SPEED := 150.0
 var current_speed := BASE_SPEED
 
@@ -218,6 +230,9 @@ func _on_boost_timeout() -> void:
 func _sync_boost_start(multiplier: float, duration: float) -> void:
 	_speed_boost_multiplier = multiplier
 	current_speed = BASE_SPEED * _speed_boost_multiplier
+	if sfx_player != null and speed_power_up_stream != null:
+		sfx_player.stream = speed_power_up_stream
+		sfx_player.play()
 	_boost_time_remaining = duration
 	# Efecto visual: tinte dorado
 	if sprite:
@@ -272,6 +287,9 @@ func _on_freeze_timeout() -> void:
 @rpc("any_peer", "call_local", "reliable")
 func _sync_freeze_start(duration: float) -> void:
 	is_frozen = true
+	if sfx_player != null and freeze_power_up_stream != null:
+		sfx_player.stream = freeze_power_up_stream
+		sfx_player.play()
 	velocity = Vector2.ZERO
 	_freeze_time_remaining = duration
 	# Crear label de countdown (solo en este jugador)
@@ -356,6 +374,19 @@ func _sync_freeze_end() -> void:
 		disappear_tween.tween_property(_ice_sprite, "modulate:a", 0.0, 0.3)
 		disappear_tween.set_parallel(false)
 		disappear_tween.tween_callback(_remove_ice_sprite)
+
+@rpc("authority", "call_local", "reliable")
+func play_shot_sound(charge_ratio: float) -> void:
+	if shot_sfx == null:
+		return
+	if charge_ratio < 0.33:
+		shot_sfx.stream = weak_shot_stream
+	elif charge_ratio < 0.66:
+		shot_sfx.stream = medium_shot_stream
+	else:
+		shot_sfx.stream = strong_shot_stream
+	if shot_sfx.stream != null:
+		shot_sfx.play()
 
 func _remove_ice_sprite() -> void:
 	if _ice_sprite != null:

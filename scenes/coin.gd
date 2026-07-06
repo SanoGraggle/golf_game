@@ -1,4 +1,8 @@
 extends Area2D
+## SONIDO ##
+@onready var power_up_sfx: AudioStreamPlayer2D = $SFX_coin
+@onready var coin_pickup_stream: AudioStream = load("res://assets/Sounds/Coin_Pickup.mp3")
+
 
 ## Señal emitida cuando una pelota recoge la moneda
 signal coin_collected(peer_id: int)
@@ -38,3 +42,6 @@ func collect_coin() -> void:
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
 	tween.set_parallel(false)
 	tween.tween_callback(queue_free)
+	if power_up_sfx != null and coin_pickup_stream != null:
+		power_up_sfx.stream = coin_pickup_stream
+		power_up_sfx.play()

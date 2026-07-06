@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://csl8ywe3i5bc2"]
 
-[ext_resource type="Script" path="res://scenes/coin.gd" id="1_coin"]
-[ext_resource type="Texture2D" path="res://assets/COSAS/Money.png" id="2_money"]
+[ext_resource type="Script" uid="uid://byxfiscubnxeb" path="res://scenes/coin.gd" id="1_coin"]
+[ext_resource type="Texture2D" uid="uid://bxd63ipc1xq68" path="res://assets/COSAS/Money.png" id="2_money"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f0"]
 atlas = ExtResource("2_money")
@@ -56,16 +56,18 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_coin"]
 radius = 21.0
 
-[node name="Coin" type="Area2D"]
+[node name="Coin" type="Area2D" unique_id=2137907]
 scale = Vector2(3, 3)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_coin")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1285588666]
 sprite_frames = SubResource("SpriteFrames_coin")
 animation = &"spin"
 autoplay = "spin"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=994770506]
 shape = SubResource("CircleShape2D_coin")
+
+[node name="SFX_coin" type="AudioStreamPlayer2D" parent="." unique_id=786828471]

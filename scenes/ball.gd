@@ -3,6 +3,7 @@ extends RigidBody2D
 @export var ball_color: Color = Color.WHITE
 @onready var sprite: Sprite2D = $Sprite2D
 
+
 ####### unique id para cada bola########
 @export var owner_peer_id := 0
 
@@ -170,6 +171,10 @@ func request_hit(mouse_position: Vector2) -> void:
 
 	var charge_ratio: float = charge_seconds / MAX_CHARGE_TIME
 	var impulse_power: float = MIN_IMPULSE + ((MAX_IMPULSE - MIN_IMPULSE) * charge_ratio)
+	
+	var owner_player := get_owner_player()
+	if owner_player != null and owner_player.has_method("play_shot_sound"):
+		owner_player.play_shot_sound.rpc(charge_ratio)
 
 	freeze = false
 	sleeping = false

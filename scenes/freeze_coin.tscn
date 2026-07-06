@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bofi6yqqauq80"]
 
-[ext_resource type="Script" path="res://scenes/freeze_coin.gd" id="1_freeze"]
-[ext_resource type="Texture2D" path="res://assets/COSAS/Money.png" id="2_money"]
+[ext_resource type="Script" uid="uid://8ku2q750pq5c" path="res://scenes/freeze_coin.gd" id="1_freeze"]
+[ext_resource type="Texture2D" uid="uid://bxd63ipc1xq68" path="res://assets/COSAS/Money.png" id="2_money"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f0"]
 atlas = ExtResource("2_money")
@@ -56,17 +56,19 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_freeze"]
 radius = 21.0
 
-[node name="FreezeCoin" type="Area2D"]
+[node name="FreezeCoin" type="Area2D" unique_id=1154106203]
 scale = Vector2(3, 3)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_freeze")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-self_modulate = Color(0.4, 0.85, 1.0, 1.0)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=780876352]
+self_modulate = Color(0.4, 0.85, 1, 1)
 sprite_frames = SubResource("SpriteFrames_freeze")
 animation = &"spin"
 autoplay = "spin"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=497043251]
 shape = SubResource("CircleShape2D_freeze")
+
+[node name="SFX_freeze_coin" type="AudioStreamPlayer2D" parent="." unique_id=580045095]

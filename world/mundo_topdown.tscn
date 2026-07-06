@@ -23,8 +23,8 @@
 [ext_resource type="Texture2D" uid="uid://bkujbpmduf4li" path="res://assets/COSAS/water stones.png" id="13_6ymdo"]
 [ext_resource type="Texture2D" uid="uid://h7b1xns18u0e" path="res://assets/COSAS/PropsWater Summer.png" id="14_v7a5t"]
 [ext_resource type="Texture2D" uid="uid://daufgynue3pdf" path="res://assets/Tileset/Tilled Soil and wet soil.png" id="16_v7a5t"]
-[ext_resource type="PackedScene" path="res://scenes/coin.tscn" id="17_coin"]
-[ext_resource type="PackedScene" path="res://scenes/freeze_coin.tscn" id="18_freeze"]
+[ext_resource type="PackedScene" uid="uid://csl8ywe3i5bc2" path="res://scenes/coin.tscn" id="17_coin"]
+[ext_resource type="PackedScene" uid="uid://bofi6yqqauq80" path="res://scenes/freeze_coin.tscn" id="18_freeze"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o48fc"]
 texture = ExtResource("2_vmc13")
@@ -5426,3 +5426,5 @@ position = Vector2(514, -494)
 
 [node name="Coin5" parent="Coins" unique_id=1967964967 instance=ExtResource("17_coin")]
 position = Vector2(320, -188)
+
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=46119334]
