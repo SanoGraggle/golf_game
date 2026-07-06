@@ -57,14 +57,9 @@ func _physics_process(delta: float) -> void:
 
 
 func get_shoot_direction() -> Vector2:
-	var origin: Vector2 = player.global_position
-
-	if player.has_method("get_my_ball"):
-		var result: Variant = player.call("get_my_ball")
-		if result is Node2D:
-			origin = (result as Node2D).global_position
-
-	var direction: Vector2 = player.get_global_mouse_position() - origin
+	# Use the player's position as the aim origin so the animation faces the
+	# mouse direction correctly for both ball shots and player attacks.
+	var direction: Vector2 = player.get_global_mouse_position() - player.global_position
 	if direction.length() <= 0.001:
 		return last_direction
 
