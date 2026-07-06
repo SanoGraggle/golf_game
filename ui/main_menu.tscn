@@ -4,6 +4,10 @@
 [ext_resource type="Script" uid="uid://cnbk17iq1x68f" path="res://ui/main_menu.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://dj5jeekxb1kb0" path="res://assets/golf.png" id="3_golf"]
 [ext_resource type="Texture2D" uid="uid://cldmjiobksnir" path="res://assets/hole.png" id="4_hole"]
+[ext_resource type="Texture2D" uid="uid://new_money_gold" path="res://assets/COSAS/Money.png" id="5_money_gold"]
+[ext_resource type="Texture2D" uid="uid://new_money_ice" path="res://assets/COSAS/Money_Ice.png" id="6_money_ice"]
+[ext_resource type="Texture2D" uid="uid://new_money_red" path="res://assets/COSAS/Money_Red.png" id="7_money_red"]
+[ext_resource type="Texture2D" uid="uid://new_money_purple" path="res://assets/COSAS/Money_Purple.png" id="8_money_purple"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htp_bg"]
 bg_color = Color(0, 0, 0, 0.8)
@@ -270,13 +274,12 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="ControlsImageLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/ControlsImagePanel"]
+[node name="ControlsImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/ControlsImagePanel"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.4)
-theme_override_font_sizes/font_size = 14
-text = "[ Add screenshot here ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("3_golf")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="GoalTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
 layout_mode = 2
@@ -299,13 +302,12 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="GoalImageLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/GoalImagePanel"]
+[node name="GoalImageLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/GoalImagePanel"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.4)
-theme_override_font_sizes/font_size = 14
-text = "[ Add screenshot here ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("4_hole")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="PowerupsTitle" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox"]
 layout_mode = 2
@@ -331,13 +333,15 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="SpeedImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed/SpeedImagePanel"]
+[node name="SpeedImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed/SpeedImagePanel"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
-theme_override_font_sizes/font_size = 11
-text = "[ img ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("5_money_gold")
+expand_mode = 1
+stretch_mode = 5
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="SpeedText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupSpeed"]
 layout_mode = 2
@@ -359,13 +363,15 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="FreezeImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze/FreezeImagePanel"]
+[node name="FreezeImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze/FreezeImagePanel"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
-theme_override_font_sizes/font_size = 11
-text = "[ img ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("6_money_ice")
+expand_mode = 1
+stretch_mode = 5
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="FreezeText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupFreeze"]
 layout_mode = 2
@@ -387,13 +393,15 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="BounceImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce/BounceImagePanel"]
+[node name="BounceImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce/BounceImagePanel"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
-theme_override_font_sizes/font_size = 11
-text = "[ img ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("7_money_red")
+expand_mode = 1
+stretch_mode = 5
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="BounceText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupBounce"]
 layout_mode = 2
@@ -415,13 +423,15 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_img_placeholder")
 
-[node name="HeavyImgLabel" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy/HeavyImagePanel"]
+[node name="HeavyImgLabel" type="TextureRect" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy/HeavyImagePanel"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.7, 0.4, 0.35)
-theme_override_font_sizes/font_size = 11
-text = "[ img ]"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("8_money_purple")
+expand_mode = 1
+stretch_mode = 5
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="HeavyText" type="Label" parent="HowToPlayPanel/MarginContainer/ContentPanel/Margin/VBox/ScrollContainer/InstructionsVBox/PowerupHeavy"]
 layout_mode = 2
