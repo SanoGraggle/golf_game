@@ -25,9 +25,9 @@ const SHOT_RANGE := 48.0
 const MIN_IMPULSE := 120.0
 const MAX_IMPULSE := 700.0
 const MAX_CHARGE_TIME := 1.25
-const STOPPED_SPEED := 10.0
-const STOP_SNAP_SPEED := 18.0
-const STOP_SNAP_DELAY := 0.25
+const STOPPED_SPEED := 8.0
+const STOP_SNAP_SPEED := 12.0
+const STOP_SNAP_DELAY := 0.6
 const SAND_DAMP := 5.0              ## linear_damp cuando está en arena (más alto = más lento)
 
 var charge_started_msec := -1
@@ -59,6 +59,9 @@ func _ready() -> void:
 	if not multiplayer.is_server():
 		freeze_mode = RigidBody2D.FREEZE_MODE_KINEMATIC
 		freeze = true
+	else:
+		# Solo el servidor maneja colisiones bola-bola (física autoritativa)
+		body_entered.connect(_on_body_entered_ball)
 	if owner_peer_id == 0:
 		owner_peer_id = name.replace("Ball_", "").to_int()
 
@@ -101,7 +104,67 @@ func stop_ball() -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	sleeping = true
-	# freeze = true # Se elimina para permitir que otras pelotas la empujen al chocar
+	slow_time = 0.0
+
+## Despierta la pelota para que el motor de física pueda moverla al ser golpeada
+func wake_up() -> void:
+	if sleeping:
+		sleeping = false
+		slow_time = 0.0
+
+## Colisión pelota-pelota: transferencia de momento elástica (estilo pool)
+## Solo corre en el servidor.
+func _on_body_entered_ball(body: Node) -> void:
+	if not multiplayer.is_server():
+		return
+	# Solo nos interesan otras pelotas
+	if not body.is_in_group("balls"):
+		return
+	var other := body as RigidBody2D
+	if other == null:
+		return
+	
+	var my_vel := linear_velocity
+	var other_vel := other.linear_velocity
+	
+	# Si ninguna se mueve, ignorar (evita cálculos inútiles)
+	if my_vel.length() < 5.0 and other_vel.length() < 5.0:
+		return
+	
+	# Dirección de la colisión: de mí hacia la otra pelota
+	var collision_normal := (other.global_position - global_position)
+	if collision_normal.length_squared() < 0.0001:
+		collision_normal = Vector2.RIGHT
+	else:
+		collision_normal = collision_normal.normalized()
+	
+	# Proyecciones de velocidad a lo largo del eje de colisión
+	var v1n := my_vel.dot(collision_normal)    # componente de MI velocidad en la normal
+	var v2n := other_vel.dot(collision_normal) # componente de la OTRA en la normal
+	
+	# Solo procesamos si me estoy aproximando a la otra pelota
+	if v1n <= v2n:
+		return
+	
+	# Colisión elástica 1D con masas iguales: intercambio de velocidades en la normal
+	# v1n_new = v2n,  v2n_new = v1n
+	var delta_v := v1n - v2n  # cuánta velocidad se transfiere
+	
+	# Aplicar restitución (coeficiente de rebote) para simular pérdida de energía
+	var restitution := 0.85
+	var impulse := collision_normal * delta_v * restitution
+	
+	# Yo pierdo ese impulso, la otra lo gana
+	linear_velocity -= impulse
+	
+	# Despertar y empujar la otra pelota
+	other.sleeping = false
+	if other.has_method("wake_up"):
+		other.wake_up()
+	other.slow_time = 0.0
+	other.linear_velocity += impulse
+	
+	# Resetear mi slow_time para que no me detenga al instante después del impacto
 	slow_time = 0.0
 	
 func _process(_delta: float) -> void:
@@ -131,9 +194,6 @@ func get_owner_player() -> Node2D:
 
 func can_server_accept_shot(sender_id: int) -> bool:
 	if sender_id != get_owner_id():
-		return false
-
-	if not is_stopped():
 		return false
 
 	var owner_player := get_owner_player()

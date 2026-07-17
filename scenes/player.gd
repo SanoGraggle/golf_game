@@ -240,8 +240,7 @@ func handle_shot_input(delta: float) -> void:
 	var ball := get_my_ball()
 	var can_hit_ball := false
 	if ball != null and global_position.distance_to(ball.global_position) <= SHOT_RANGE:
-		if ball.has_method("is_stopped") and ball.is_stopped():
-			can_hit_ball = true
+		can_hit_ball = true
 
 	if Input.is_action_just_pressed("shoot"):
 		is_charging_shot = true
