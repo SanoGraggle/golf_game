@@ -280,9 +280,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 15
 text = "• W A S D  —  Move your character
-• SPACE  —  Attach to the ball (so you can hit it)
+• SPACE or LEFT CLICK  —  Attach to the ball (so you can hit it)
 • MOUSE  —  Aim where you want to shoot the ball
-• Hold SPACE to charge your shot, release to fire
+• Hold SPACE or LEFT CLICK to charge your shot, release to fire
+• RIGHT CLICK or ESC  —  Cancel your shot while charging
 • The longer you hold, the stronger the shot!"
 autowrap_mode = 2
 
@@ -310,7 +311,7 @@ theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
 theme_override_font_sizes/font_size = 15
 text = "• Sink your ball into the hole before your rival!
 • Both players share the same golf course
-• Walk up to your ball, attach with SPACE, aim with the mouse and shoot
+• Walk up to your ball, attach with SPACE or LEFT CLICK, aim with the mouse and shoot
 • The first player to sink the ball wins the round"
 autowrap_mode = 2
 

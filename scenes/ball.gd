@@ -101,7 +101,7 @@ func stop_ball() -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	sleeping = true
-	freeze = true
+	# freeze = true # Se elimina para permitir que otras pelotas la empujen al chocar
 	slow_time = 0.0
 	
 func _process(_delta: float) -> void:

@@ -60,6 +60,11 @@ var _indicator_instance: CanvasLayer = null
 var charge_bar_script: GDScript = preload("res://scenes/charge_bar.gd")
 var _charge_bar: Node2D = null
 
+# --- Indicador de dirección de tiro ---
+var _aim_line: Line2D = null
+var _aim_line_outline: Line2D = null
+var _can_hit_own_ball_at_start := false
+
 func _ready() -> void:
 	add_to_group("players") # Vital para poder buscar a los rivales
 	
@@ -91,6 +96,51 @@ func _process(delta: float) -> void:
 		if _heavy_time_remaining < 0.0:
 			_heavy_time_remaining = 0.0
 		_update_countdown_label(_heavy_countdown_label, _heavy_time_remaining)
+
+	# Actualizar indicador de dirección de tiro
+	if is_multiplayer_authority():
+		if _aim_line == null:
+			# Crear contorno negro primero (se dibuja detrás)
+			_aim_line_outline = Line2D.new()
+			_aim_line_outline.width = 5.0
+			_aim_line_outline.default_color = Color(0.0, 0.0, 0.0, 1.0)
+			_aim_line_outline.z_index = 4
+			_aim_line_outline.visible = false
+			add_child(_aim_line_outline)
+
+			# Crear línea blanca principal
+			_aim_line = Line2D.new()
+			_aim_line.width = 3.0
+			_aim_line.default_color = Color(1.0, 1.0, 1.0, 1.0)
+			_aim_line.z_index = 5
+			_aim_line.visible = false
+			add_child(_aim_line)
+		
+		if _aim_line != null and _aim_line_outline != null:
+			var show_aim = is_charging_shot and _can_hit_own_ball_at_start
+			_aim_line.visible = show_aim
+			_aim_line_outline.visible = show_aim
+			if show_aim:
+				var ball := get_my_ball()
+				if ball != null:
+					var start_pos: Vector2 = _aim_line.to_local(ball.global_position)
+					var mouse_pos: Vector2 = _aim_line.to_local(get_global_mouse_position())
+					var dir: Vector2 = (mouse_pos - start_pos).normalized()
+					
+					var charge_seconds: float = _current_charge_time
+					if charge_seconds > 1.25:
+						charge_seconds = 1.25
+					var charge_ratio: float = charge_seconds / 1.25
+					
+					var line_length: float = 20.0 + (60.0 * charge_ratio)
+					var end_pos: Vector2 = start_pos + dir * line_length
+					
+					var arrow_left: Vector2 = end_pos - dir.rotated(0.5) * 12.0
+					var arrow_right: Vector2 = end_pos - dir.rotated(-0.5) * 12.0
+					
+					var points = PackedVector2Array([start_pos, end_pos, arrow_left, end_pos, arrow_right])
+					_aim_line.points = points
+					_aim_line_outline.points = points
 
 func _physics_process(delta: float) -> void:
 	if is_frozen:
@@ -196,6 +246,7 @@ func handle_shot_input(delta: float) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		is_charging_shot = true
 		_current_charge_time = 0.0
+		_can_hit_own_ball_at_start = can_hit_ball
 		request_swing_charge_start.rpc()
 		if can_hit_ball:
 			ball.request_charge_start.rpc()
@@ -206,6 +257,19 @@ func handle_shot_input(delta: float) -> void:
 
 	if is_charging_shot:
 		_current_charge_time += delta
+		
+		# Cancelar disparo con Click Derecho o la tecla ESCAPE
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_key_pressed(KEY_ESCAPE):
+			is_shot_cancelled = true
+			is_charging_shot = false
+			_shot_cooldown = 0.5 # Cooldown corto al cancelar manualmente
+			if _charge_bar and _charge_bar.has_method("stop_charge"):
+				_charge_bar.stop_charge()
+			request_swing_charge_cancel.rpc()
+			if can_hit_ball and ball.has_method("request_charge_cancel"):
+				ball.request_charge_cancel.rpc()
+			return
+
 		if _current_charge_time >= 3.0:
 			is_shot_cancelled = true
 			is_charging_shot = false
