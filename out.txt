@@ -1,0 +1,357 @@
+Godot Engine v4.6.1.stable.official.14d19694e - https://godotengine.org
+
+SCRIPT ERROR: Compile Error: Identifier not found: Game
+   at: GDScript::reload (res://world/t_map.gd:27)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Failed to load script "res://world/t_map.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:2907)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+SCRIPT ERROR: Compile Error: Identifier not found: Game
+   at: GDScript::reload (res://scenes/win_screen.gd:18)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Failed to load script "res://scenes/win_screen.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:2907)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+   GDScript backtrace (most recent call first):
+       [0] _init (C:/Users/NACHO/.gemini/antigravity/brain/d81a0e91-1950-4c96-90c6-b6ac4d156493/scratch/find_bad_tiles.gd:10)
+Total tiles: 96
+Good tiles (4 frames): 48
+Bad tiles (not 4 frames): 48
+  (3, 0) frames=1
+  (3, 1) frames=1
+  (3, 2) frames=1
+  (3, 3) frames=1
+  (3, 4) frames=1
+  (3, 5) frames=1
+  (3, 6) frames=1
+  (3, 7) frames=1
+  (3, 8) frames=1
+  (3, 9) frames=1
+  (3, 10) frames=1
+  (3, 11) frames=1
+  (3, 12) frames=1
+  (3, 13) frames=1
+  (3, 14) frames=1
+  (3, 15) frames=1
+  (4, 0) frames=1
+  (4, 1) frames=1
+  (4, 2) frames=1
+  (4, 3) frames=1
+  (4, 4) frames=1
+  (4, 5) frames=1
+  (4, 6) frames=1
+  (4, 7) frames=1
+  (4, 8) frames=1
+  (4, 9) frames=1
+  (4, 10) frames=1
+  (4, 11) frames=1
+  (4, 12) frames=1
+  (4, 13) frames=1
+  (4, 14) frames=1
+  (4, 15) frames=1
+  (5, 0) frames=1
+  (5, 1) frames=1
+  (5, 2) frames=1
+  (5, 3) frames=1
+  (5, 4) frames=1
+  (5, 5) frames=1
+  (5, 6) frames=1
+  (5, 7) frames=1
+  (5, 8) frames=1
+  (5, 9) frames=1
+  (5, 10) frames=1
+  (5, 11) frames=1
+  (5, 12) frames=1
+  (5, 13) frames=1
+  (5, 14) frames=1
+  (5, 15) frames=1
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)
+ERROR: Cannot set animation columns count, tiles are already present in the space the tile would cover.
+   at: set_tile_animation_frames_count (scene/resources/2d/tile_set.cpp:5127)

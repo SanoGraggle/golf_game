@@ -12,6 +12,24 @@ signal vote_updated(id: int)
 @export var fill_screen: bool = true
 @export var test_players: Array[PlayerDataResource] = [] # first one is server
 @export var main_scene: PackedScene
+@export var maps: Array[String] = [
+	"res://world/mundo_topdown.tscn",
+	"res://world/mundo_topdown_2.tscn"
+]
+@export var map_names: Array[String] = [
+	"Mundo Topdown",
+	"Mundo Topdown 2"
+]
+var selected_map_index: int = 0
+
+func get_selected_map_scene() -> PackedScene:
+	if selected_map_index >= 0 and selected_map_index < maps.size():
+		var path = maps[selected_map_index]
+		if ResourceLoader.exists(path):
+			var loaded = load(path)
+			if loaded is PackedScene:
+				return loaded
+	return main_scene
 
 var players: Array[Statics.PlayerData] = []
 var change_window_scale : bool = true :

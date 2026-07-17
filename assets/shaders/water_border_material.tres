@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://assets/shaders/water_border.gdshader" id="1"]
+
+[resource]
+shader = ExtResource("1")
+shader_parameter/wave_speed = 2.0
+shader_parameter/wave_amplitude = 0.004
+shader_parameter/wave_frequency = 8.0

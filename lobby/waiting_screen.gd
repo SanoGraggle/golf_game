@@ -5,6 +5,7 @@ extends Control
 @onready var player_name: Label = %PlayerName
 @onready var role_button: Button = %RoleButton
 @onready var ready_button: Button = %ReadyButton
+@onready var map_button: Button = %MapButton
 @onready var player_list: VBoxContainer = %PlayerList
 @onready var waiting_label: Label = %WaitingLabel
 @onready var back_button: Button = %BackButton
@@ -35,6 +36,13 @@ func _ready() -> void:
 	game_start_container.hide()
 	
 	_update_ready_button()
+	
+	map_button.pressed.connect(_cycle_map)
+	if multiplayer.is_server():
+		map_button.disabled = false
+	else:
+		map_button.disabled = true
+	_update_map_button()
 	
 	if Game.use_roles:
 		_fill_role_container()
@@ -71,6 +79,7 @@ func _handle_players_updated() -> void:
 	_update_ready_button()
 	if multiplayer.is_server():
 		Game.reset_votes()
+		change_map_rpc.rpc(Game.selected_map_index)
 
 
 func _handle_back_pressed() -> void:
@@ -128,7 +137,7 @@ func _stop_timer() -> void:
 @rpc("reliable", "call_local")
 func _start_game() -> void:
 	Game.set_current_player_vote(false)
-	get_tree().change_scene_to_packed(Game.main_scene)
+	get_tree().change_scene_to_packed(Game.get_selected_map_scene())
 
 
 func _can_start_game() -> bool:
@@ -168,3 +177,20 @@ func _all_players_selected_role() -> bool:
 		if player.role == Statics.Role.NONE:
 			return false
 	return true
+
+
+func _cycle_map() -> void:
+	if multiplayer.is_server():
+		var next_index = (Game.selected_map_index + 1) % Game.maps.size()
+		change_map_rpc.rpc(next_index)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func change_map_rpc(index: int) -> void:
+	Game.selected_map_index = index
+	_update_map_button()
+
+
+func _update_map_button() -> void:
+	if Game.selected_map_index >= 0 and Game.selected_map_index < Game.map_names.size():
+		map_button.text = "Map: " + Game.map_names[Game.selected_map_index]

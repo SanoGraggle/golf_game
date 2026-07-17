@@ -73,7 +73,7 @@ func _on_start_game_timeout() -> void:
 
 @rpc("reliable", "call_local")
 func _start_game() -> void:
-	get_tree().change_scene_to_packed(Game.main_scene)
+	get_tree().change_scene_to_packed(Game.get_selected_map_scene())
 
 
 func _update_window_placement(index: int) -> void:
